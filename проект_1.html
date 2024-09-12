@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web</title>
+</head>
+<body>
+    <a id="Кубгу"></a>
+    1. <a href="http://kubsu.ru/">абсолютная гиперссылка на главную страницу сайта kubsu.ru</a><br>
+    2. <a href="https://kubsu.ru/">абсолютная на главную сайта kubsu.ru в протоколе https</a><br><br><br><br><br><br><br><br>
+    3. <a href="http://kubsu.ru/"><img src="https://avatars.mds.yandex.net/i?id=f7f7a0b6435ef535318762a14db03efaa5ea6622-4507907-images-thumbs&n=13" alt="скример"></a><br>
+    4. <a href="https://vk.cc/cAwEKu">Кубгу</a><br>
+    5. <a href="https://vk.cc/cAvPoJ"title="Кубгу">Кубгу</a><br>
+    6. <a href="#Кубгу">ссылка на фрагмент текущей страницы</a><br>
+   7.<a href="http://shpargalkablog.ru/2016/09/url-parameters-js.html?a=name&b=tel&c=number"> Параметры</a><br>
+   8. <a href="https://www.wildberries.ru/catalog/100464950/detail.aspx">Ссылка id</a><br>
+   9. <a href="проект_1.html">Текущая</a><br>
+    10. <a href="about:blank">About</a><br>
+    11.<a href="../проект_1.html">Уровень выше</a><br>
+    12.<a href="../../проект_1.html">2 уровня выше</a><br>
+    13.<p>Go to the
+        <a href="https://kubsu.ru/">KubSu</a>.
+      </p>
+    14.<a href="https://en.wikipedia.org/wiki/Vladimir_Putin#Early_life"> ссылку на фрагмент страницы стороннего сайта</a><br>
+    15.<img src="C:/Users/Пользователь/Pictures/Screenshots/photo.png" usemap="#image-map">
+    <map name="image-map">
+        <area shape="rect" coords="10,10,100,100" href="https://kubsu.ru" alt="Область 1">
+        <area shape="circle" coords="500,200,100" href="https://msu.ru/" alt="Область 2">
+    </map> <br>
+    16.<a href="##">ссылка с пустым href</a><br>
+    17.<a onclick="window.location = 'https://msu.ru/'">ссылка без href</a><br>
+    18.<a href="http://kubsu.ru/" rel="nofollow">запрещен переход поисковикам</a><br>
+    19.<a href="http://kubsu.ru/" rel="nofollow" target="_blank">запрещен для индексации поисковиками</a><br>
+    20.<ol>
+        <li><a href="http://kubsu.ru/"title="Официальный сайт Кубанского государственного университета">КубГУ</a>;</li>
+        <li><a href="https://kubsau.ru/"title="Официальный сайт Кубанского государственного аграрного университета">КубГАУ</a>;</li>
+      </ol>
+    21.<a href="ftp://s0188078@test.kubsau.ru/010302.pdf">KubSU</a>
+
+    22.
+    <form>
+        <h1>Форма</h1>
+        <ol>
+          <li><p>Ввод имени:</p>
+            <input type="text" name="userName" placeholder="Введите имя" size="18" /></a>;</li>
+          <li><p>Ввод номера:</p>
+            <input type="tel" placeholder="+7 (***) ***-**-**" pattern="+7 ([0-9]{3}) [0-9]{3}-[0-9]{2}-[0-9]{2}"></a>;</li>
+          <li><p>Ввод email:</p>
+            <input type="email" name="email" placeholder="user@mail.ru"></li>
+          <li><p>Ввод даты рождения:</p>
+            <input type="date" id="date" name="date"/></li>
+          <li><p>Пол:</p>
+            <p><input name="dzen" type="radio" value="male"> М <input name="dzen" type="radio" value="female"> Ж</p></li>
+          <li><p>Любимый язык программирования:</p>
+            <p><input type="checkbox" name="pascal"/>Pascal
+              <input type="checkbox" name="C"/>C
+              <input type="checkbox" name="C++"/>C++
+              <input type="checkbox" name="JavaScript"/>JavaScript
+              <input type="checkbox" name="PHP"/>PHP
+              <input type="checkbox" name="Python"/>Python
+              <input type="checkbox" name="Java"/>Java
+              <input type="checkbox" name="Haskel"/>Haskel
+              <input type="checkbox" name="Clojure"/>Clojure
+              <input type="checkbox" name="Prolog"/>Prolog
+              <input type="checkbox" name="Scala"/>Scala</p></li>
+              <li><p>Биография:</p>
+                <textarea rows="10" cols="80"
+                      placeholder="Give Feedback here">
+                  </textarea></li>
+              <li>С контрактом ознакомлен(а):<input type="checkbox" name="dogovor"/></li>
+        </ol>
+        <button type="submit">Сохранить</button>
+        </form>
+</body>
+</html>
+
