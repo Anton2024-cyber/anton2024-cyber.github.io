@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.js" integrity= "sha512-BbVEDjbqdN3Eow8+empLMrJlxXRj5nEitiCAK5A1pUr66+jLVejo3PmjIaucRnjlB0P9R3rBUs3g5jXc8ti+fQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js"integrity= "sha512-iphNRh6dPbeuPGIrQbCdbBF/qcqadKWLa35YPVfMZMHBSI6PLJh1om2xCTWhpVpmUyb4IvVS9iYnnYMkleVXLA=="crossorigin="anonymous"referrerpolicy="no-referrer"></script> 
+</head>
+<body>
+    Количество товаров:<input type="text" id="num1"><br>
+    Товар:
+    <select size="1">
+            <option value='tovar1'>Телефон</option>
+            <option value='tovar2'>Компьютер</option>
+            <option value='tovar3'>Планшет</option>
+            <option value='tovar4'>Мышка</option>
+        </select><br>
+    Цена за единицу товара:<input type="text" id="num2"><br>
+    <button onclick="multyNumbers()">Multiplication</button>
+    <div id="result">Result: </div>
+
+<script>
+        function multyNumbers() {
+            var num1 = parseFloat(document.getElementById("num1").value);
+            var num2 = parseFloat(document.getElementById("num2").value);
+            var result = num1 * num2;
+            document.getElementById("result").innerText = "Result: " + result;
+        }
+        // Определение аналогичных функций для вычитания, умножения и деления
+    </script>
+</body>
+</html>
