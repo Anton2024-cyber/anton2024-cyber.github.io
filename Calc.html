@@ -34,8 +34,8 @@ window.addEventListener('DOMContentLoaded', function (event) {
 </script>  
 
 <form>
-  <p>Количество товара: <input name="num1" type="text" required></p>
-  <p>Цена товара: <input name="num2" type="text" required></p>
+  <p>Количество товара: <input name="num1" type="text" required pattern="^[ 0-9]+$"></p>
+  <p>Цена товара: <input name="num2" type="text" required pattern="^[ 0-9]+$"></p>
   <p>Название: <select name="select1">
     <option value='tovar1'>Телефон</option>
             <option value='tovar2'>Компьютер</option>
