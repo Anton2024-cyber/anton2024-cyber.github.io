@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <script defer src="./me-java.js"></script> 
+</head>
+<body>
+
+
+<form>
+  <p>Количество товара: <input name="num1" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
+  <p>Цена товара: <input name="num2" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
+  <p>Название: <select name="select1">
+    <option value='tovar1'>Телефон</option>
+            <option value='tovar2'>Компьютер</option>
+            <option value='tovar3'>Планшет</option>
+            <option value='tovar4'>Мышка</option>
+  </select></p>
+  <button id="button1" onclick="return click1();">Multiplication</button>
+  <p>Result: <div id="result"></div></p>
+</form>
+</body>
+</html>
