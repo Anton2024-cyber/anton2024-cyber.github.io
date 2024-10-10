@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.js" integrity= "sha512-BbVEDjbqdN3Eow8+empLMrJlxXRj5nEitiCAK5A1pUr66+jLVejo3PmjIaucRnjlB0P9R3rBUs3g5jXc8ti+fQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js" integrity= "sha512-iphNRh6dPbeuPGIrQbCdbBF/qcqadKWLa35YPVfMZMHBSI6PLJh1om2xCTWhpVpmUyb4IvVS9iYnnYMkleVXLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+</head>
+<body>
+    <script>
+function click1() {
+  let f1 = document.getElementsByName("num1");
+  let f2 = document.getElementsByName("num2");
+  let r = document.getElementById("result");
+  r.innerHTML = f1[0].value * f2[0].value;
+  let s = document.getElementsByName("select1");
+  console.log(s[0].value);
+  return false;
+}
+</script>  
+
+<script>
+function onClick(event) {
+  event.preventDefault();
+  alert("click");
+}
+window.addEventListener('DOMContentLoaded', function (event) {
+  console.log("DOM fully loaded and parsed");
+  let b = document.getElementById("button1");
+  b.addEventListener("click", onClick);
+});
+</script>  
+
+<form>
+  <p>Количество товара: <input name="num1" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
+  <p>Цена товара: <input name="num2" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
+  <p>Название: <select name="select1">
+    <option value='tovar1'>Телефон</option>
+            <option value='tovar2'>Компьютер</option>
+            <option value='tovar3'>Планшет</option>
+            <option value='tovar4'>Мышка</option>
+  </select></p>
+  <button id="button1" onclick="return click1();">Multiplication</button>
+  <p>Result: <div id="result"></div></p>
+</form>
+</body>
+</html>
