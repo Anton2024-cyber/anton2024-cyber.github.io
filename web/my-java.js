@@ -6,7 +6,7 @@ function click1() {
     let s = document.getElementsByName("select1");
     console.log(s[0].value);
     return false;
-}
+};
 function onClick(event) {
     event.preventDefault();
     alert("click");
