@@ -1,3 +1,4 @@
+<script>
 function click1() {
     let f1 = document.getElementsByName("num1");
     let f2 = document.getElementsByName("num2");
@@ -7,7 +8,8 @@ function click1() {
     console.log(s[0].value);
     return false;
 }
-
+    </script>
+<script>
 function onClick(event) {
     event.preventDefault();
     alert("click");
@@ -17,9 +19,4 @@ function onClick(event) {
     let b = document.getElementById("button1");
     b.addEventListener("click", onClick);
   });
-
-let str = '123';
-let m = str.match(/^\d+$/);
-console.log(m);
-if (m !== null)
-  console.log("Подходит!")
+</script>
