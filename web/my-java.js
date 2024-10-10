@@ -17,3 +17,9 @@ function onClick(event) {
     let b = document.getElementById("button1");
     b.addEventListener("click", onClick);
   });
+
+let str = '123';
+let m = str.match(/^\d+$/);
+console.log(m);
+if (m !== null)
+  console.log("Подходит!")
