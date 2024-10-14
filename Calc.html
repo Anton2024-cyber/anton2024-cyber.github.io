@@ -6,8 +6,8 @@
     <script src= "https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js" integrity= "sha512-iphNRh6dPbeuPGIrQbCdbBF/qcqadKWLa35YPVfMZMHBSI6PLJh1om2xCTWhpVpmUyb4IvVS9iYnnYMkleVXLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
 </head>
 <body>
-    <script>
-
+   
+   <script>
 function click1() {
   let f1 = document.getElementsByName("num1");
   let f2 = document.getElementsByName("num2");
@@ -17,7 +17,6 @@ function click1() {
   console.log(s[0].value);
   return false;
 }
-
 </script>  
 
 <script>
@@ -33,15 +32,63 @@ window.addEventListener('DOMContentLoaded', function (event) {
 });
 </script>  
 
+<script>
+window.addEventListener('DOMContentLoaded', function (event) {
+  let s = document.getElementsByName("select1");
+  s[0].addEventListener("change", function(event) {
+    let select = event.target;
+    let radios = document.getElementById("myradios");
+    let checkboxes = document.getElementById("mycheckboxs");
+    console.log(select.value);
+    if (select.value == "tovar2") {
+      radios.style.display = "none";
+    }
+    else {
+      radios.style.display = "block";
+    }
+    if (select.value == "tovar3") {
+      checkboxes.style.display = "none";
+    }
+    else {
+      checkboxes.style.display = "block";
+    }
+    if (select.value == "tovar4") {
+      checkboxes.style.display = "none";
+      radios.style.display = "none";
+    }
+  });
+  
+  let r = document.querySelectorAll(".myradios input[type=radio]");
+  r.forEach(function(radio) {
+    radio.addEventListener("change", function(event) {
+      let r = event.target;
+      console.log(r.value);
+    });    
+  });
+  
+});
+</script>  
+
+
 <form>
   <p>Количество товара: <input name="num1" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
   <p>Цена товара: <input name="num2" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
   <p>Название: <select name="select1">
-    <option value='tovar1'>Телефон</option>
+            <option value='tovar1'>Телефон</option>
             <option value='tovar2'>Компьютер</option>
             <option value='tovar3'>Планшет</option>
             <option value='tovar4'>Мышка</option>
   </select></p>
+  <div class="myradios" id="myradios">
+    <label><input type="radio" name="myradio" value="r1" data="1">Опция 1</label>
+    <label><input type="radio" name="myradio" value="r2" data="2">Опция 2</label>
+    <label><input type="radio" name="myradio" value="r3" data="3">Опция 3</label>
+  </div>  
+  <div class="mycheckboxs" id="mycheckboxs">
+    <label><input type="checkbox" name="mycheckbox" data="4">Свойство 1</label>
+    <label><input type="checkbox" name="mycheckbox" data="5">Свойство 2</label>
+    <label><input type="checkbox" name="mycheckbox" data="6">Свойство 3</label>
+  </div>
   <button id="button1" onclick="return click1();">Multiplication</button>
   <p>Result: </p><div id="result"></div>
 </form>
