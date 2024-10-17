@@ -6,10 +6,9 @@
     <script src= "https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js" integrity= "sha512-iphNRh6dPbeuPGIrQbCdbBF/qcqadKWLa35YPVfMZMHBSI6PLJh1om2xCTWhpVpmUyb4IvVS9iYnnYMkleVXLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
 </head>
 <body>
-   
-   <script>
-function click1() {
-  let f1 = document.getElementsByName("num1");
+  <script>
+    function click1() {
+      let f1 = document.getElementsByName("num1");
       let f2 = document.getElementsByName("num2");
       let r = document.getElementById("result");
       var sum=0;
@@ -62,80 +61,80 @@ function click1() {
       console.log(s[0].value);
       return false;
     }
-</script>  
-
-<script>
-function onClick(event) {
-  event.preventDefault();
-  alert("click");
-}
-
-window.addEventListener('DOMContentLoaded', function (event) {
-  console.log("DOM fully loaded and parsed");
-  let b = document.getElementById("button1");
-  b.addEventListener("click", onClick);
-});
-</script>  
-
-<script>
-window.addEventListener('DOMContentLoaded', function (event) {
-  let s = document.getElementsByName("select1");
-  s[0].addEventListener("change", function(event) {
-    let select = event.target;
-    let radios = document.getElementById("myradios");
-    let checkboxes = document.getElementById("mycheckboxs");
-    console.log(select.value);
-    if (select.value == "tovar2") {
-      radios.style.display = "none";
+    </script>  
+    
+    <script>
+    function onClick(event) {
+      event.preventDefault();
+      alert("click");
     }
-    else {
-      radios.style.display = "block";
-    }
-    if (select.value == "tovar3") {
-      checkboxes.style.display = "none";
-    }
-    else {
-      checkboxes.style.display = "block";
-    }
-    if (select.value == "tovar4") {
-      checkboxes.style.display = "none";
-      radios.style.display = "none";
-    }
-  });
-  
-  let r = document.querySelectorAll(".myradios input[type=radio]");
-  r.forEach(function(radio) {
-    radio.addEventListener("change", function(event) {
-      let r = event.target;
-      console.log(r.value);
-    });    
-  });
-  
-});
-</script>  
-
-
-<form>
-  <p>Количество товара: <input name="num1" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
-  <p>Цена товара: <input name="num2" type="text" placeholder="цифры" required pattern="^[ 0-9]+$"></p>
-  <p>Название: <select name="select1">
-            <option value='tovar1'>Телефон</option>
-            <option value='tovar2'>Компьютер</option>
-            <option value='tovar3'>Планшет</option>
-            <option value='tovar4'>Мышка</option>
-  </select></p>
-  <div class="myradios" id="myradios">
-    <label><input type="radio" name="myradio" value="r1" >Опция 1</label>
-    <label><input type="radio" name="myradio" value="r2" >Опция 2</label>
-    <label><input type="radio" name="myradio" value="r3" >Опция 3</label>
-  </div>  
-  <div class="mycheckboxs" id="mycheckboxs">
-    <label><input type="checkbox" name="mycheckbox" >Свойство 1</label>
-    <label><input type="checkbox" name="mycheckbox" >Свойство 2</label>
-    <label><input type="checkbox" name="mycheckbox" >Свойство 3</label>
-  </div>
-  <button id="button1" onclick="return click1();">Multiplication</button>
-  <p>Result: </p><div id="result"></div>
-</form>
+    
+    window.addEventListener('DOMContentLoaded', function (event) {
+      console.log("DOM fully loaded and parsed");
+      let b = document.getElementById("button1");
+      b.addEventListener("click", onClick);
+    });
+    </script>  
+    
+    <script>
+    window.addEventListener('DOMContentLoaded', function (event) {
+      let s = document.getElementsByName("select1");
+      s[0].addEventListener("change", function(event) {
+        let select = event.target;
+        let radios = document.getElementById("myradios");
+        let checkboxes = document.getElementById("mycheckboxs");
+        console.log(select.value);
+        if (select.value == "tovar3") {
+          radios.style.display = "none";
+        }
+        else {
+          radios.style.display = "block";
+        }
+        if (select.value == "tovar2") {
+          checkboxes.style.display = "none";
+        }
+        else {
+          checkboxes.style.display = "block";
+        }
+        if (select.value == "tovar4") {
+          checkboxes.style.display = "none";
+          radios.style.display = "none";
+        }
+      });
+      
+      let r = document.querySelectorAll(".myradios input[type=radio]");
+      r.forEach(function(radio) {
+        radio.addEventListener("change", function(event) {
+          let r = event.target;
+          console.log(r.value);
+        });    
+      });
+      
+    });
+    </script>  
+    
+    
+    <form>
+      <p>Количество товара: <input name="num1" type="text" placeholder="цифры" required pattern="^[ 0-9]+$" ></p>
+      <p>Цена товара: <input name="num2" type="text" placeholder="цифры" required pattern="^[ 0-9]+$" ></p>
+      <p>Название: <select name="select1">
+                <option value='tovar1'>Телефон</option>
+                <option value='tovar2'>Компьютер</option>
+                <option value='tovar3'>Планшет</option>
+                <option value='tovar4'>Мышка</option>
+      </select></p>
+      <div class="myradios" id="myradios">
+        <label><input type="radio" name="myradio1" id="myradio1" value="10">+10</label>
+        <label><input type="radio" name="myradio2" id="myradio2" value="20">+20</label>
+        <label><input type="radio" name="myradio3" id="myradio3" value="30">+30</label>
+      </div>  
+      <div class="mycheckboxs" id="mycheckboxs">
+        <label><input type="checkbox" name="mycheckbox1" id="mycheckbox1" value="40">+40</label>
+        <label><input type="checkbox" name="mycheckbox2" id="mycheckbox2" value="50">+50</label>
+        <label><input type="checkbox" name="mycheckbox3" id="mycheckbox3" value="60">+60</label>
+      </div>
+      <button id="button1" onclick="return click1()">Multiplication</button>
+      <p>Result:<span> </span> </p><div id="result"></div>
+    </form>
 </body>
 </html>
