@@ -49,6 +49,7 @@ function click1() {
       var rer=do_it()+f2[0].value+do_ti();
       r.innerHTML = f1[0].value * rer/10;
       return r;
+}
 
 function onClick(event) {
     event.preventDefault();
