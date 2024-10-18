@@ -1,6 +1,7 @@
 function click1() {
-    var f1 = document.getElementsByName("num1");
-      var f2 = document.getElementsByName("num2");
+    function click1() {
+      let f1 = document.getElementsByName("num1");
+      let f2 = document.getElementsByName("num2");
       let r = document.getElementById("result");
       var sum=0;
       var por=0;
@@ -23,7 +24,7 @@ function click1() {
     sum+=90;
     else if (ch2.checked && ch3.checked)
     sum+=110;
-      return sum/10;
+      return sum;
       }
       function do_ti()
     { 
@@ -46,8 +47,8 @@ function click1() {
     por+=50;
       return por;
       }
-      var rer=do_it()+f2+do_ti();
-      r.innerHTML = f1 * rer/10;
+      var rer=do_it()+f2[0].value+do_ti();
+      r.innerHTML = f1[0].value * rer/10;
       let s = document.getElementsByName("select1");
       console.log(s[0].value);
       return false;
