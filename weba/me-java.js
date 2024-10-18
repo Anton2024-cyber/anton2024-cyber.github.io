@@ -23,7 +23,7 @@ function click1() {
     sum+=90;
     else if (ch2.checked && ch3.checked)
     sum+=110;
-      return sum;
+      return sum/10;
       }
       function do_ti()
     { 
