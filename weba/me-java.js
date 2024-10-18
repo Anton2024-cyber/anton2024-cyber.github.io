@@ -48,10 +48,7 @@ function click1() {
       }
       var rer=do_it()+f2[0].value+do_ti();
       r.innerHTML = f1[0].value * rer/10;
-      let s = document.getElementsByName("select1");
-      console.log(s[0].value);
-      return false;
-}
+      return r;
 
 function onClick(event) {
     event.preventDefault();
