@@ -1,6 +1,5 @@
 function click1() {
-    function click1() {
-      let f1 = document.getElementsByName("num1");
+    let f1 = document.getElementsByName("num1");
       let f2 = document.getElementsByName("num2");
       let r = document.getElementById("result");
       var sum=0;
