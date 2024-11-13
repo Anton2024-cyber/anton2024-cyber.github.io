@@ -76,3 +76,13 @@ window.onpopstate = function(event) {
         $('.popup').removeClass('active');
     }
 };
+
+function onClick(event) {
+  event.preventDefault();
+  alert("form send");
+}
+window.addEventListener('DOMContentLoaded', function (event) {
+  console.log("DOM fully loaded and parsed");
+  let b = document.getElementById("button1");
+  b.addEventListener("click", onClick);
+});
