@@ -1,4 +1,4 @@
-const dialog = document.getElementById('popup-box')
+const dialog = document.getElementById('myDialog')
 const dialogOpener = document.querySelector('.openDialogBtn')
 const dialogCloser = dialog.querySelector('.closeDialogBtn')
 
