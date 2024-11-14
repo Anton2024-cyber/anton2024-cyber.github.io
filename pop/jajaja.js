@@ -46,6 +46,6 @@ window.addEventListener('DOMContentLoaded', function (event) {
   b.addEventListener("click", onClick);
 });
 
-
-
-window.history.back()
+const state = { url: "/", title: "Home", decription: "Home Page" };
+history.pushState(state, state.title, state.url);    
+console.log(state); 
