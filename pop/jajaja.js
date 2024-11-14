@@ -45,3 +45,7 @@ window.addEventListener('DOMContentLoaded', function (event) {
   let b = document.getElementById("button1");
   b.addEventListener("click", onClick);
 });
+
+
+
+window.history.back()
