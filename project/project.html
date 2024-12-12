@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Faun</title>
+	<link rel="stylesheet" href="fonts/ofont.ru_Bebas Neue.ttf">
+	<link rel="stylesheet" href="fonts/ofont.ru_bebas_neue_thin.ttf">
+	<link rel="stylesheet" href="css/main.css">
+    <script defer src="./jaja.js"></script> 
+    <style>
+        *{
+	padding: 0;
+	margin: 0;
+}
+body{
+	font-family: 'Bebas Neue', sans-serf;
+}
+
+.header{
+    height: 90px;
+    overflow: hidden;
+    background-color: #15263b;
+    ;
+}
+
+.container{
+    width: 100%;
+	width: 1470px;
+	margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #291549;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 90%;
+    height: 150px;
+	margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar a {
+    float: right;
+    font-size: 16px;
+    display: inline;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    position: relative;
+    
+}
+
+.dropdown {
+    float: right;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;    
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(172, 32, 32, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.footer {
+  padding: 20px;
+  text-align: left;
+  background: #e21515;
+  color:#f2f2f2;
+  float: right;
+  text-decoration: none;
+  width:100%;
+}
+.footer a{
+  color: #f2f2f2;
+  text-align: left;
+  text-decoration: none;
+}
+
+.cont{
+    float: right;
+    display: inline;
+}
+
+.gal{
+    text-align: center;
+    display: flex;
+  justify-content: center;
+}
+
+body {
+  font-family: Arial;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  vertical-align: middle;
+}
+
+/* Расположите контейнер с изображением (необходимо расположить стрелки влево и вправо) */
+.container {
+  position: relative;
+}
+
+/* Скрыть изображения по умолчанию */
+.mySlides {
+  display: none;
+  text-align: center;
+}
+
+/* Добавление указателя при наведении указателя мыши на миниатюры изображений */
+.cursor {
+  cursor: pointer;
+}
+
+/* Вперед и назад кнопки */
+.prev,
+.next {
+  position: absolute;
+  top:40%;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  height: 100px;
+  padding: 10px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+/* Расположите кнопку "вперед" справа */
+.next {
+  right: 300px;
+  border-radius: 16px;
+}
+.prev{
+  left:300px;
+  border-radius: 16px;
+}
+
+/* При наведении курсора мыши добавьте черный цвет фона с небольшим прозрачным слоем */
+.prev:hover,
+.next:hover {
+  background-color: rgb(109, 109, 109);
+}
+
+/* Номер текста (1/3 и т.д.) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Контейнер для текста изображения */
+.caption-container {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 2px 16px;
+  color: #000000;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Шесть колонн бок о бок */
+.column {
+  float: left;
+  width: 12.5%;
+}
+
+/* Добавьте эффект прозрачности для миниатюрных изображений */
+.demo {
+  opacity: 0.3;
+  width:185.3px;
+  height:150px;
+}
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #b4c721;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+
+.links{order:1;}
+.linkss{order:2}
+.linksi{order:3}
+.linksa{order:4}
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+	<header class="header">
+            <div class="logo"><img src="https://avatars.mds.yandex.net/get-shedevrum/14794476/img_907d6770b32611ef9d891690387607a1/orig" style="width: 120px; height: 100px;"></div>
+            <div class="navbar">
+                <div class="col-sm">
+                    <div class="dropdown">
+                  <button class="dropbtn" style="width: 200px; border-bottom:1px solid #F00;">Dropdown 
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                  <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+                  </div>
+                <a href="#news" style="width: 200px; border-bottom:1px solid #F00;">News</a>
+                <a href="#home" style="width: 200px; border-bottom:1px solid #F00;">Home</a>
+                </div> 
+            </div>
+	</header>
+    <div class="links">
+    <div class="gal">
+    <table>
+        <tr>
+            <th><img src="https://media.geeksforgeeks.org/wp-content/uploads/geeks-25.png" alt=" " style="width:200px"></th>
+            <th><img src="https://media.geeksforgeeks.org/wp-content/uploads/geeks-25.png" alt=" " style="width:200px"></th>
+        </tr> 
+            <tr>
+                <td style="width:100px">pppppppssssssssssssssssssssssssssrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrpp</td>
+                <td style="width: 100px;">aaaapppp</td>
+            </tr>
+    </table>
+</div>
+</div>
+<div class="linkss">
+  <div class="mySlides">
+    <img src="https://avatars.mds.yandex.net/i?id=1cf04a6f38f0be15415a0c35010d27a3eb59c5c5-7942200-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
+    </div>
+    <div class="mySlides">
+      <img src="https://avatars.mds.yandex.net/i?id=02a0d438915e4409b6779abb9faf64f6cfcca7e5-5380211-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
+      </div>
+      <div class="mySlides">
+        <img src="https://avatars.mds.yandex.net/i?id=794669b01123dbf41c6d22cde6ba7d4cf4902e9b-6202880-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+        </div>
+        <div class="mySlides">
+          <img src="https://avatars.mds.yandex.net/i?id=2ad00f6d6da86c36477f9a86aefc02107e2f256a-4474675-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+          </div>
+          <div class="mySlides">
+            <img src="https://avatars.mds.yandex.net/i?id=b6ee796842773a40fe1b1a47a69f87391169dc1a-12387244-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+            </div>
+            <div class="mySlides">
+              <img src="https://avatars.mds.yandex.net/i?id=1b8e0e70d61637c540f4f74748bba9fe24c7c2a2-5241344-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+              </div>
+              <div class="mySlides">
+                <img src="https://avatars.mds.yandex.net/i?id=38c9a040e09790b2810b546c18fbd74938b1dfcc-9144721-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                </div>
+                <div class="mySlides">
+                  <img src="https://avatars.mds.yandex.net/i?id=34f57633c955c47b56c68537076e5bfabb4a397b-4577841-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                  </div>
+    <a class="next" onclick="plusSlides(1)">Вперед</a>
+  <a class="prev" onclick="plusSlides(-1)">Назад</a>
+  <div class="caption-container">
+    <p id="caption"></p>
+  </div>
+  <div style="text-align: center;">
+    <div class="column">
+        <img class="demo cursor" onclick="currentSlide(1)" alt="1/8">
+      </div>
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(2)" alt="2/8">
+      </div>
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(3)" alt="3/8">
+      </div>
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(4)" alt="4/8">
+      </div>
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(5)" alt="5/8">
+      </div>    
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(6)" alt="6/8">
+      </div>
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(7)" alt="7/8">
+      </div>
+      <div class="column">
+        <img class="demo cursor" onclick="currentSlide(8)" alt="8/8">
+      </div>
+<div class="linksi">
+    <div class="footer">
+        <div class="footer a">
+        <a href='#'>Помощь</a>
+        <a href='#cont'>Контакты</a>
+        <a href='#'>Правила</a>
+        <p>Телефон: +8 (800) 555-35-5</p>
+        <p>Email: user_name@mail.ru</p>
+        <div class="cont">
+                <form>
+            <input type="text" name="userName" placeholder=" Введите имя" size="18" style="border-radius:280px ; height: 40px; background-color: rgb(26, 209, 50); padding: 0; border: none; " /><br><br>
+            <input type="tel" placeholder=" Телефон (+7 (***) ***--)" pattern="+7 ([0-9]{3}) [0-9]{3}-[0-9]{2}-[0-9]{2}" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); "><br>
+            <input type="email" name="email" placeholder=" E-mail" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); "><br>
+            <input rows="10" cols="40" placeholder=" Ваш коментарий" style="border-radius:28px ; height: 100px; background-color: rgb(26, 209, 50); width: 350px; "><br>
+            <p>Согласен(-а) с обработкой персональных данных </p><input type="checkbox" name="dogovor" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); text-align: center;"/><br>
+            <button type="submit" style="border-radius:40px ; height: 25px; background-color: rgb(26, 209, 50); width: 96px;">Отправить</button>
+                </form>
+            </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>
