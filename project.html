@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="fonts/ofont.ru_Bebas Neue.ttf">
 	<link rel="stylesheet" href="fonts/ofont.ru_bebas_neue_thin.ttf">
 	<link rel="stylesheet" href="css/main.css">
+  <script defer src="./jaja.js"></script> 
     <style>
         *{
 	padding: 0;
@@ -125,6 +126,131 @@ body{
   justify-content: center;
 }
 
+.portfolio-section {
+    display: grid; 
+    margin: 10px; 
+    grid-template-columns: repeat(4, 1fr); 
+    grid-gap: 10px; 
+}    
+
+.portfolio-item {
+      display: grid; 
+    min-height: 32vh; 
+    background-size: cover; 
+    background-position: center; 
+    text-align: center; 
+    align-content: center; 
+}    
+
+.portfolio-item:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1/3; 
+  }    
+
+  
+
+.portfolio-item:nth-child(4) {
+    grid-column: 1/3; 
+}  
+
+.portfolio-item:nth-child(3) {
+  grid-column: 1/3; 
+  }    
+
+.pypy{
+  position: relative;
+}
+
+  .mySlides {
+  display: none;
+  text-align: center;
+}
+
+/* Добавление указателя при наведении указателя мыши на миниатюры изображений */
+.cursor {
+  cursor: pointer;
+}
+
+/* Вперед и назад кнопки */
+.prev,
+.next {
+  position: absolute;
+  top:40%;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+/* Расположите кнопку "вперед" справа */
+.next {
+  right: 300px;
+  border-radius: 16px;
+}
+.prev{
+  left:300px;
+  border-radius: 16px;
+}
+
+/* При наведении курсора мыши добавьте черный цвет фона с небольшим прозрачным слоем */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Номер текста (1/3 и т.д.) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Контейнер для текста изображения */
+.caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Шесть колонн бок о бок */
+.column {
+  float: left;
+  width: 12.5%;
+}
+
+/* Добавьте эффект прозрачности для миниатюрных изображений */
+.demo {
+  opacity: 0.3;
+  width:185.3px;
+  height:150px;
+}
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #b4c721;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+
     </style>
 </head>
 <body>
@@ -149,6 +275,8 @@ body{
             </div>
 		</div>
 	</header>
+  
+  <h1 style="text-align: center;">Команда</h1>
         <div class="gal">
             <table>
             <tr>
@@ -161,7 +289,45 @@ body{
                 </tr>
         </table>
     </div>
-    </div>
+
+    <h1 style="text-align: center;">Последние работы</h1>
+    <section class="portfolio-section">
+      <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_su2wAVd7EGmLmYzZnEBGtWyO9763XsgoJ2utxbkn.png)"><span>Ссылки</span></div>
+      <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_6idMUMxc3827vqIwmUNWFYfkiiJ6iQHcm5beqqAS.png)"><span>Калькулятор</span></div>
+      <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_V6QSkq3LGESN711H2tmPTNLzhTi6eFTGLwMAcyDL.png)"><span>Поп-ап</span></div>
+      <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_XgDukzqUQ9Vq7EwYfMFRd8oYAIWvufqVpVa9KD0F.png)"><span>Галерея</span></div>
+     </section>    
+
+     <h1>Отзывы</h1>
+<div class="pypy">
+     <div class="mySlides">
+      <img src="https://avatars.mds.yandex.net/i?id=1cf04a6f38f0be15415a0c35010d27a3eb59c5c5-7942200-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
+      </div>
+      <div class="mySlides">
+        <img src="https://avatars.mds.yandex.net/i?id=02a0d438915e4409b6779abb9faf64f6cfcca7e5-5380211-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
+        </div>
+        <div class="mySlides">
+          <img src="https://avatars.mds.yandex.net/i?id=794669b01123dbf41c6d22cde6ba7d4cf4902e9b-6202880-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+          </div>
+          <div class="mySlides">
+            <img src="https://avatars.mds.yandex.net/i?id=2ad00f6d6da86c36477f9a86aefc02107e2f256a-4474675-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+            </div>
+            <div class="mySlides">
+              <img src="https://avatars.mds.yandex.net/i?id=b6ee796842773a40fe1b1a47a69f87391169dc1a-12387244-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+              </div>
+              <div class="mySlides">
+                <img src="https://avatars.mds.yandex.net/i?id=1b8e0e70d61637c540f4f74748bba9fe24c7c2a2-5241344-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                </div>
+                <div class="mySlides">
+                  <img src="https://avatars.mds.yandex.net/i?id=38c9a040e09790b2810b546c18fbd74938b1dfcc-9144721-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                  </div>
+                  <div class="mySlides">
+                    <img src="https://avatars.mds.yandex.net/i?id=34f57633c955c47b56c68537076e5bfabb4a397b-4577841-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                    </div>
+      
+    <a class="next" onclick="plusSlides(1)">Next</a>
+    <a class="prev" onclick="plusSlides(-1)">Prev</a>
+</div>
     <footer class="footer">
         <div class="footer a">
         <a href='#'>Помощь</a>
