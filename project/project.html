@@ -249,13 +249,58 @@ body{
   opacity: 1;
 }
 
+.container2 {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #777;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    text-align: left;
+}
+
+/* Блок услуги */
+.service-item {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.service-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.service-item img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+.service-item h3 {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
 
     </style>
 </head>
 <body>
 	<header class="header">
 		<div class="container">
-            <div class="logo"><img src="https://avatars.mds.yandex.net/get-shedevrum/14794476/img_907d6770b32611ef9d891690387607a1/orig" style="width: 120px; height: 100px;" alt=""></div>
+            <div class="logo"><img src="https://avatars.mds.yandex.net/get-shedevrum/14794476/img_907d6770b32611ef9d891690387607a1/orig" style="width: 120px; height: 100px;"></div>
             <div class="navbar">
                 <div class="col-sm">
                     <div class="dropdown">
@@ -288,6 +333,61 @@ body{
                 </tr>
         </table>
     </div>
+
+    <div class="container2">
+      <h1 style="text-align: center;">Ох какие мы классные!</h1>
+      <p class="subtitle" style="text-align: center;">Лучше нас только Иисус и то только по воскресеньям</p>
+      
+      <div class="services">
+          <!-- Блок 1 -->
+          <div class="service-item">
+              <img src="icon1.png" alt="Добавление информации">
+              <h3>Добавление информации на сайт, создание новых разделов</h3>
+          </div>
+          <!-- Блок 2 -->
+          <div class="service-item">
+              <img src="icon2.png" alt="Разработка модулей">
+              <h3>Разработка и оптимизация модулей сайта</h3>
+          </div>
+          <!-- Блок 3 -->
+          <div class="service-item">
+              <img src="icon3.png" alt="Интеграция с CRM">
+              <h3>Интеграция с CRM, 1C, платежными системами, любыми веб-сервисами</h3>
+          </div>
+          <!-- Блок 4 -->
+          <div class="service-item">
+              <img src="icon4.png" alt="Доработки">
+              <h3>Любые доработки функционала и дизайна</h3>
+          </div>
+          <!-- Блок 5 -->
+          <div class="service-item">
+              <img src="icon5.png" alt="Аудит безопасности">
+              <h3>Аудит и мониторинг безопасности Drupal сайтов</h3>
+          </div>
+          <!-- Блок 6 -->
+          <div class="service-item">
+              <img src="icon6.png" alt="Миграция и апгрейд">
+              <h3>Миграция, импорт контента и апгрейд Drupal</h3>
+          </div>
+          <!-- Блок 7 -->
+          <div class="service-item">
+              <img src="icon7.png" alt="Оптимизация сайтов">
+              <h3>Оптимизация и ускорение Drupal-сайтов</h3>
+          </div>
+          <!-- Блок 8 -->
+          <div class="service-item">
+              <img src="icon8.png" alt="Веб-маркетинг и SEO">
+              <h3>Веб-маркетинг, консультации и работы по SEO</h3>
+          </div>
+          <!-- Блок 8 -->
+          <div class="service-item">
+              <img src="icon9.png" alt="блаблабла">
+              <h3>блаблоблаблубли</h3>
+          </div>
+      </div>
+  </div>
+
+  
 
     <h1 style="text-align: center;">Последние работы</h1>
     <div class="portfolio-section">
@@ -336,11 +436,11 @@ body{
         <p>Email: user_name@mail.ru</p>
         <div class="cont">
                 <form>
-            <input type="text" name="userName" placeholder=" Введите имя" size="18" style="border-radius:280px ; height: 40px; background-color: rgb(26, 209, 50); padding: 0; border: none; " ><br><br>
+            <input type="text" name="userName" placeholder=" Введите имя" size="18" style="border-radius:280px ; height: 40px; background-color: rgb(26, 209, 50); padding: 0; border: none; " /><br><br>
             <input type="tel" placeholder=" Телефон (+7 (***) ***--)" pattern="+7 ([0-9]{3}) [0-9]{3}-[0-9]{2}-[0-9]{2}" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); "><br><br>
             <input type="email" name="email" placeholder=" E-mail" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); "><br><br>
             <textarea rows="10" cols="40" placeholder=" Ваш коментарий" style="border-radius:28px ; height: 100px; background-color: rgb(26, 209, 50); width: 350px; "></textarea><br><br>
-            <p>Согласен(-а) с обработкой персональных данных </p><input type="checkbox" name="dogovor" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); text-align: center;"><br><br>
+            <p>Согласен(-а) с обработкой персональных данных </p><input type="checkbox" name="dogovor" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); text-align: center;"/><br><br>
             <button type="submit" style="border-radius:40px ; height: 25px; background-color: rgb(26, 209, 50); width: 96px;">Отправить</button>
                 </form>
             </div>
