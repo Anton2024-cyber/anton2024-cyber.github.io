@@ -303,6 +303,64 @@ body{
     color: #333;
 }
 
+.team-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.team-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+/* Сетка команды */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* Член команды */
+.team-member {
+    background: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.team-member h3 {
+    font-size: 18px;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.team-member p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.team-meta {
+    color: #777;
+    font-size: 12px;
+}
+
     </style>
 </head>
 <body>
@@ -328,20 +386,6 @@ body{
 		</div>
 	</header>
   
-  <h1 style="text-align: center;">Команда</h1>
-        <div class="gal">
-            <table>
-            <tr>
-                <th><img src="https://media.geeksforgeeks.org/wp-content/uploads/geeks-25.png" alt=" " style="width:200px"></th>
-                <th><img src="https://media.geeksforgeeks.org/wp-content/uploads/geeks-25.png" alt=" " style="width:200px"></th>
-            </tr> 
-                <tr>
-                    <td>ppppppppp</td>
-                    <td>aaaapppp</td>
-                </tr>
-        </table>
-    </div>
-
     <div class="container2">
       <h1 style="text-align: center;">Ох какие мы классные!</h1>
       <p class="subtitle" style="text-align: center;">Лучше нас только Иисус и то только по воскресеньям</p>
@@ -395,7 +439,25 @@ body{
       </div>
   </div>
 
-
+  <div class="team-container">
+    <h1 class="team-title" style="text-align: center;">Имя нам Легион</h1>
+    <div class="team-grid">
+        <!-- Член команды 1 -->
+        <div class="team-member">
+            <img src="photo1.jpg" alt="Антон Кирчиенко">
+            <h3>Антон Кириченко</h3>
+            <p>Руководитель руководителя и вообще хороший человек</p>
+            <p class="team-meta">В жизни 19 лет<br>Опыт работы с HTML: 1 семестр</p>
+        </div>
+        <!-- Член команды 2 -->
+        <div class="team-member">
+            <img src="photo2.jpg" alt="Артур Аветисян">
+            <h3>Арутур Аветисян</h3>
+            <p>Директор директора и настоящий Боб-строитель</p>
+            <p class="team-meta">В жизни почти 20 лет<br>Опыт работы с HTML: 1 семестр</p>
+        </div>
+    </div>
+</div>
 
     <h1 style="text-align: center;">Последние работы</h1>
     <div class="portfolio-section">
