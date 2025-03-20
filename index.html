@@ -24,5 +24,97 @@
     <img src="Bite.png"></a>
     <h1>ОПРЕДЕЛИТЬ КОДИРОВКУ РЕСУРСА</h1>
     <img src="Cod.png"></a>
+    <form id="registrationForm" action="index.php" method="POST">
+        <h1>Форма</h1>
+        <ol>
+          <li><p>Ввод имени:</p>
+            <input type="text" id="fullName" name="fullName" required pattern="^[А-Яа-яЁё\s]+$" maxlength="150" placeholder="Ввидите имя"/>;</li>
+          <li><p>Ввод номера:</p>
+            <input type="tel" placeholder="+7 (***) ***-**-**" pattern="+7 ([0-9]{3}) [0-9]{3}-[0-9]{2}-[0-9]{2}" id="phone" name="phone">;</li>
+            <span class="error" id="phoneError"></span>
+            <li><p>Ввод email:</p>
+            <input type="email" name="email" placeholder="user@mail.ru"></li>
+          <li><p>Ввод даты рождения:</p>
+            <input type="date" id="birthDate" name="birthDate"/></li>
+            <span class="error" id="birthDateError"></span>
+            <li ><p>Пол:</p>
+            <p><input name="dzen" type="radio" value="male" id="gender"> М <input name="dzen" type="radio" value="female" id="gender"> Ж</p></li>
+            <span class="error" id="genderError"></span>
+          <li><p>Любимый язык программирования:</p>
+            <p><input type="checkbox" name="pascal"/>Pascal
+              <input type="checkbox" name="C"/>C
+              <input type="checkbox" name="C++"/>C++
+              <input type="checkbox" name="JavaScript"/>JavaScript
+              <input type="checkbox" name="PHP"/>PHP
+              <input type="checkbox" name="Python"/>Python
+              <input type="checkbox" name="Java"/>Java
+              <input type="checkbox" name="Haskel"/>Haskel
+              <input type="checkbox" name="Clojure"/>Clojure
+              <input type="checkbox" name="Prolog"/>Prolog
+              <input type="checkbox" name="Scala"/>Scala</p></li>
+              <span class="error" id="favoriteLangError"></span><br>
+              <li><p>Биография:</p>
+                <textarea rows="10" cols="60"
+                      placeholder="Give Feedback here">
+                  </textarea></li>
+              <li>С контрактом ознакомлен(а):<input type="checkbox" name="dogovor"/></li>
+        </ol>
+        <button type="submit">Сохранить</button>
+        </form>
+        <script>
+       document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            let isValid = true;
+            let fio = document.getElementById('fio').value;
+            let gender = document.getElementById('gender').value;
+            let phone = document.getElementById('phone').value;
+            let dob = document.getElementById('dob').value;
+            let language = document.getElementById('language').selectedOptions.length;
+
+            // Валидация ФИО
+            let fioError = document.getElementById('fioError');
+            fioError.textContent = '';
+            if (!/^[а-яА-ЯёЁ\s]{1,150}$/.test(fio)) {
+                fioError.textContent = 'ФИО должно содержать только буквы и пробелы, не более 150 символов.';
+                isValid = false;
+            }
+
+            // Валидация пола
+            let genderError = document.getElementById('genderError');
+            genderError.textContent = '';
+            if (gender === "") {
+                genderError.textContent = 'Выберите пол.';
+                isValid = false;
+            }
+
+            // Валидация номера телефона
+            let phoneError = document.getElementById('phoneError');
+            phoneError.textContent = '';
+            if (!/^\d+$/.test(phone)) {
+                phoneError.textContent = 'Номер телефона должен содержать только цифры.';
+                isValid = false;
+            }
+
+            // Валидация даты рождения
+            let dobError = document.getElementById('dobError');
+            dobError.textContent = '';
+            if (!dob) {
+                dobError.textContent = 'Укажите дату рождения.';
+                isValid = false;
+            }
+
+            // Валидация любимого ЯП
+            let languageError = document.getElementById('languageError');
+            languageError.textContent = '';
+            if (language === 0) {
+                languageError.textContent = 'Выберите хотя бы один язык программирования.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // От
+            }
+          }
+        )
+        </script>
 </body>
 </html>
