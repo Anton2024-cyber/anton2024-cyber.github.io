@@ -10,7 +10,7 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <form id="registrationForm" action="index.php" method="POST">
+    <form id="registrationForm" action="http://u68669.kubsu-dev.ru/anton2024-cyber.github.io/Type.png" method="POST">
         <h1>Форма</h1>
         <ol>
           <li><p>Ввод имени:</p>
@@ -45,10 +45,13 @@
                 <textarea rows="10" cols="60"
                       placeholder="Give Feedback here">
                   </textarea></li>
-              <li>С контрактом ознакомлен(а):<input type="checkbox" name="dogovor"/></li>
+              <li>С контрактом ознакомлен(а):<input type="checkbox" name="dogovor" id="dogovor" required/></li>
+              <span class="error" id="contractError"></span>
         </ol>
         <button type="submit">Сохранить</button>
         </form>
+        <div class="success-message" id="successMessage">Данные успешно сохранены!</div>
+    
         <script>
        document.getElementById('registrationForm').addEventListener('submit', function(event) {
             let isValid = true;
@@ -57,6 +60,7 @@
             let phone = document.getElementById('phone').value;
             let dob = document.getElementById('dob').value;
             let language = document.getElementById('language').selectedOptions.length;
+            let dogovor = document.getElementById('dogovor').value;
 
             // Валидация ФИО
             let fioError = document.getElementById('fioError');
@@ -90,6 +94,13 @@
                 isValid = false;
             }
 
+            let contractError = document.getElementById('contractError');
+            contractError.textContent = '';
+            if (dogovor === "") {
+                contractrError.textContent = 'Согласитесь с условиями';
+                isValid = false;
+            }
+
             // Валидация любимого ЯП
             let languageError = document.getElementById('languageError');
             languageError.textContent = '';
@@ -97,12 +108,14 @@
                 languageError.textContent = 'Выберите хотя бы один язык программирования.';
                 isValid = false;
             }
-
             if (!isValid) {
                 event.preventDefault(); // От
             }
+            showSuccessMessage();
           }
-        )
+        );
+        function showSuccessMessage() {
+          document.getElementById("successMessage").style.display = "block";}
         </script>
 </body>
 </html>
