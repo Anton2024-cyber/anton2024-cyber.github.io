@@ -26,8 +26,10 @@
             <input class="form-control" value="2000-07-15" type="date" name="birthdate" id="birthdate"></li>
             
             <li ><p>Пол:</p>
-            <p><input type="radio" checked="checked" class="form-check-input" value="male" id="male" name="gender"> М 
-              <input type="radio" class="form-check-input" value="female" id="female" name="gender"> Ж</p></li>
+            <label class="form-check-label"><input type="radio" checked="checked" class="form-check-input" value="male" id="male" name="gender">
+            М</label>
+          <label class="form-check-label"><input type="radio" class="form-check-input" value="female" id="female" name="gender">
+            Ж</label></li>
             
           <li><p>Любимый язык программирования:</p>
             <select class="form-select" id="languages" name="languages[]" multiple="multiple" required>
@@ -46,7 +48,8 @@
               <li><p>Биография:</p>
                 <input type="text" class="form-control" id="bio" name="bio"></li>
             
-              <li>С контрактом ознакомлен(а):<input type="checkbox" class="form-check-input" name="contract_accepted" id="contract_accepted"></li>
+              <li><label class="form-check-label"><input type="checkbox" class="form-check-input" name="contract_accepted" id="contract_accepted">
+            С контрактом ознакомлен(a)</label></li>
         </ol>
         <button type="submit" name="save" class="btn btn-primary">Сохранить</button>
         </form>
