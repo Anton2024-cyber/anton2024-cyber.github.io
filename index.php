@@ -1,80 +1,77 @@
 <?php
-// Отправляем браузеру правильную кодировку,
-// файл index.php должен быть в кодировке UTF-8 без BOM.
-header('Content-Type: text/html; charset=UTF-8');
+// Устанавливаем соединение с базой данных
+$host = 'localhost';
+$dbname = 'u68669';
+$username = 'u68669';
+$password = '5943600';
+$dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
 
-// В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
-// и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  // В суперглобальном массиве $_GET PHP хранит все параметры, переданные в текущем запросе через URL.
-  if (!empty($_GET['save'])) {
-    // Если есть параметр save, то выводим сообщение пользователю.
-    print('Спасибо, результаты сохранены.');
-  }
-  // Включаем содержимое файла form.php.
-  include('form.php');
-  // Завершаем работу скрипта.
-  exit();
-}
-// Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в БД.
-
-// Проверяем ошибки.
-$errors = FALSE;
-if (empty($_POST['fio'])) {
-  print('Заполните имя.<br/>');
-  $errors = TRUE;
-}
-
-if (empty($_POST['year']) || !is_numeric($_POST['year']) || !preg_match('/^\d+$/', $_POST['year'])) {
-  print('Заполните год.<br/>');
-  $errors = TRUE;
-}
-
-
-// *************
-// Тут необходимо проверить правильность заполнения всех остальных полей.
-// *************
-
-if ($errors) {
-  // При наличии ошибок завершаем работу скрипта.
-  exit();
-}
-
-// Сохранение в базу данных.
-
-$user = 'db'; // Заменить на ваш логин uXXXXX
-$pass = '123'; // Заменить на пароль
-$db = new PDO('mysql:host=localhost;dbname=test', $user, $pass,
-  [PDO::ATTR_PERSISTENT => true, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); // Заменить test на имя БД, совпадает с логином uXXXXX
-
-// Подготовленный запрос. Не именованные метки.
 try {
-  $stmt = $db->prepare("INSERT INTO application SET name = ?");
-  $stmt->execute([$_POST['fio']]);
+    $pdo = new PDO($dsn, $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Ошибка подключения к БД: " . $e->getMessage());
 }
-catch(PDOException $e){
-  print('Error : ' . $e->getMessage());
-  exit();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $errors = [];
+    if (!empty($errors)) {
+        echo "<h2>Ошибки:</h2><ul>";
+        foreach ($errors as $error) {
+            echo "<li>$error</li>";
+        }
+        echo "</ul>";
+        exit;
+    }
+    try {
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("INSERT INTO applications (full_name, phone, email, birthdate, gender, biography, agreement)
+                      VALUES (:name, :phone, :email, :birthdate, :gender, :bio, :contract)");
+        $stmt->execute([
+            ':name' => $_POST['name'],
+            ':phone' => $_POST['phone'],
+            ':email' => $_POST['email'],
+            ':birthdate' => $_POST['birthdate'],
+            ':gender' => $_POST['gender'],
+            ':bio' => $_POST['bio'],
+            ':contract' => isset($_POST['contract_accepted']) ? 1 : 0
+        ]);
+        $applicationId = $pdo->lastInsertId();
+$validLanguages = ['Pascal', 'C', 'C++', 'JavaScript', 'PHP', 'Python', 'Java', 'Haskell', 'Clojure', 'Prolog', 'Scala'];
+$selectedLanguages = array_intersect($_POST['languages'] ?? [], $validLanguages);
+
+if (!empty($selectedLanguages)) {
+    $placeholders = rtrim(str_repeat('?,', count($selectedLanguages)), ',');
+    $stmt = $pdo->prepare("SELECT id, name FROM languages WHERE name IN ($placeholders)");
+    $stmt->execute($selectedLanguages);
+    $existingLanguages = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    $missingLanguages = array_diff($selectedLanguages, array_keys($existingLanguages));
+    if (!empty($missingLanguages)) {
+        $stmt = $pdo->prepare("INSERT IGNORE INTO languages (name) VALUES (?)");
+        foreach ($missingLanguages as $lang) {
+            $stmt->execute([$lang]);
+            if ($stmt->rowCount() > 0) {
+                $existingLanguages[$lang] = $pdo->lastInsertId();
+            } else {
+                $stmtSelect = $pdo->prepare("SELECT id FROM languages WHERE name = ?");
+                $stmtSelect->execute([$lang]);
+                $existingLanguages[$lang] = $stmtSelect->fetchColumn();
+            }
+        }
+    }
+
+    $stmt = $pdo->prepare("INSERT IGNORE INTO application_languages (application_id, language_id) VALUES (?, ?)");
+    foreach ($existingLanguages as $langId) {
+        $stmt->execute([$applicationId, $langId]);
+    }
 }
-
-//  stmt - это "дескриптор состояния".
- 
-//  Именованные метки.
-//$stmt = $db->prepare("INSERT INTO test (label,color) VALUES (:label,:color)");
-//$stmt -> execute(['label'=>'perfect', 'color'=>'green']);
- 
-//Еще вариант
-/*$stmt = $db->prepare("INSERT INTO users (firstname, lastname, email) VALUES (:firstname, :lastname, :email)");
-$stmt->bindParam(':firstname', $firstname);
-$stmt->bindParam(':lastname', $lastname);
-$stmt->bindParam(':email', $email);
-$firstname = "John";
-$lastname = "Smith";
-$email = "john@test.com";
-$stmt->execute();
-*/
-
-// Делаем перенаправление.
-// Если запись не сохраняется, но ошибок не видно, то можно закомментировать эту строку чтобы увидеть ошибку.
-// Если ошибок при этом не видно, то необходимо настроить параметр display_errors для PHP.
-header('Location: ?save=1');
+        $pdo->commit();
+        header("Location: index.html?success=1");
+        exit;
+    } catch (PDOException $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        die("Ошибка при сохранении данных: " . $e->getMessage());
+    }
+}
+?>
