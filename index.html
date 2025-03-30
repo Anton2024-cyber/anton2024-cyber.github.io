@@ -17,22 +17,22 @@
             <input type="text" placeholder="Введите ваше ФИО" name="name" id = "name"></li>
             
           <li><p>Ввод номера:</p>
-            <input class="form-control" type="tel" placeholder="1234567890" name="phone" id="phone"></li>
+            <input type="tel" placeholder="1234567890" name="phone" id="phone"></li>
             
             <li><p>Ввод email:</p>
-            <input class="form-control" type="email" placeholder="Введите вашу почту" name="email" id="email"></li>
+            <input type="email" placeholder="Введите вашу почту" name="email" id="email"></li>
             
           <li><p>Ввод даты рождения:</p>
-            <input class="form-control" value="2000-07-15" type="date" name="birthdate" id="birthdate"></li>
+            <input value="2000-07-15" type="date" name="birthdate" id="birthdate"></li>
             
             <li><p>Пол:</p>
-            <label class="form-check-label"><input type="radio" checked="checked"  value="male" id="male" name="gender">
+            <label><input type="radio" checked="checked"  value="male" id="male" name="gender">
             М</label>
-          <label class="form-check-label"><input type="radio"  value="female" id="female" name="gender">
+          <label><input type="radio"  value="female" id="female" name="gender">
             Ж</label></li>
             
           <li><p>Любимый язык программирования:</p>
-            <select class="form-select" id="languages" name="languages[]" multiple="multiple" required>
+            <select id="languages" name="languages[]" multiple="multiple" required>
               <option value="C" name="C">C</option>
               <option value="C++" name="C++">C++</option>
               <option value="JavaScript" name="JavaScript">JavaScript</option>
@@ -46,9 +46,9 @@
               </select></li>
             
               <li><p>Биография:</p>
-                <input type="text" class="form-control" id="bio" name="bio"></li>
+                <input type="text" id="bio" name="bio"></li>
             
-              <li>С контрактом ознакомлен(a)<label class="form-check-label"><input type="checkbox" class="form-check-input" name="contract_accepted" id="contract_accepted">
+              <li>С контрактом ознакомлен(a)<label ><input type="checkbox" class="form-check-input" name="contract_accepted" id="contract_accepted">
             </label></li>
         </ol>
         <button type="submit" name="save" class="btn btn-primary">Сохранить</button>
