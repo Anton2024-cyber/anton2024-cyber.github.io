@@ -14,21 +14,23 @@
         <h1>Форма</h1>
         <ol>
           <li><p>Ввод имени:</p>
-            <input type="text" id="fullName" name="fullName" required pattern="^[А-Яа-яЁё\s]+$" maxlength="150" placeholder="Ввидите имя"/>;</li>
+            <input type="text" class="form-control" placeholder="Введите ваше ФИО" name="name" id = "name"></li>
+            
           <li><p>Ввод номера:</p>
-            <input type="tel" placeholder="+7 (***) ***-**-**" required pattern="^[ 0-9]+$" id="phone" name="phone">;</li>
-            <span class="error" id="phoneError"></span>
+            <input class="form-control" type="tel" placeholder="1234567890" name="phone" id="phone"></li>
+            
             <li><p>Ввод email:</p>
-            <input type="email" name="email" placeholder="user@mail.ru" required></li>
+            <input class="form-control" type="email" placeholder="Введите вашу почту" name="email" id="email"></li>
+            
           <li><p>Ввод даты рождения:</p>
-            <input type="date" id="birthDate" name="birthDate" required/></li>
-            <span class="error" id="birthDateError"></span>
+            <input class="form-control" value="2000-07-15" type="date" name="birthdate" id="birthdate"></li>
+            
             <li ><p>Пол:</p>
-            <p><input name="dzen" type="radio" value="male" id="gender" required> М 
-              <input name="dzen" type="radio" value="female" id="gender" required> Ж</p></li>
-            <span class="error" id="genderError"></span>
+            <p><input type="radio" checked="checked" class="form-check-input" value="male" id="male" name="gender"> М 
+              <input type="radio" class="form-check-input" value="female" id="female" name="gender"> Ж</p></li>
+            
           <li><p>Любимый язык программирования:</p>
-            <select id="languages" name="languages[]" multiple="multiple" required>
+            <select class="form-select" id="languages" name="languages[]" multiple="multiple" required>
               <option value="C" name="C">C</option>
               <option value="C++" name="C++">C++</option>
               <option value="JavaScript" name="JavaScript">JavaScript</option>
@@ -40,73 +42,13 @@
               <option value="Prolog" name="Prolog">Prolog</option>
               <option value="Scala" name="Scala">Scala</option>
               </select></li>
-              <span class="error" id="favoriteLangError"></span><br>
+            
               <li><p>Биография:</p>
                 <input type="text" class="form-control" id="bio" name="bio"></li>
-              <li>С контрактом ознакомлен(а):<input type="checkbox" name="dogovor" id="dogovor" required/></li>
-              <span class="error" id="contractError"></span>
+            
+              <li>С контрактом ознакомлен(а):<input type="checkbox" class="form-check-input" name="contract_accepted" id="contract_accepted"></li>
         </ol>
-        <button type="submit">Сохранить</button>
+        <button type="submit" name="save" class="btn btn-primary">Сохранить</button>
         </form>
-    
-        <script>
-       document.getElementById('registrationForm').addEventListener('submit', function(event) {
-           event.preventDefault();
-            let isValid = true;
-            let fio = document.getElementById('fio').value;
-            let gender = document.getElementById('gender').value;
-            let phone = document.getElementById('phone').value;
-            let dob = document.getElementById('dob').value;
-            let language = document.getElementById('language').selectedOptions.length;
-            let dogovor = document.getElementById('dogovor').value;
-
-            // Валидация ФИО
-            let fioError = document.getElementById('fioError');
-            fioError.textContent = '';
-            if (!/^[а-яА-ЯёЁ\s]{1,150}$/.test(fio)) {
-                fioError.textContent = 'ФИО должно содержать только буквы и пробелы, не более 150 символов.';
-                isValid = false;
-            }
-
-            // Валидация пола
-            let genderError = document.getElementById('genderError');
-            genderError.textContent = '';
-            if (gender === "") {
-                genderError.textContent = 'Выберите пол.';
-                isValid = false;
-            }
-
-            // Валидация номера телефона
-            let phoneError = document.getElementById('phoneError');
-            phoneError.textContent = '';
-            if (!/^\d+$/.test(phone)) {
-                phoneError.textContent = 'Номер телефона должен содержать только цифры.';
-                isValid = false;
-            }
-
-            // Валидация даты рождения
-            let dobError = document.getElementById('dobError');
-            dobError.textContent = '';
-            if (!dob) {
-                dobError.textContent = 'Укажите дату рождения.';
-                isValid = false;
-            }
-
-            let contractError = document.getElementById('contractError');
-            contractError.textContent = '';
-            if (dogovor === "") {
-                contractrError.textContent = 'Согласитесь с условиями';
-                isValid = false;
-            }
-
-            // Валидация любимого ЯП
-            let languageError = document.getElementById('languageError');
-            languageError.textContent = '';
-            if (language === 0) {
-                languageError.textContent = 'Выберите хотя бы один язык программирования.';
-                isValid = false;
-            }
-            });
-        </script>
 </body>
 </html>
