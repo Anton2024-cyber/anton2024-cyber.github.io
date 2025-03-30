@@ -10,7 +10,7 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <form id="registrationForm">
+    <form id="registrationForm" action="index.php" method="POST" class="w-50 mx-auto">
         <h1>Форма</h1>
         <ol>
           <li><p>Ввод имени:</p>
@@ -50,7 +50,6 @@
         </ol>
         <button type="submit">Сохранить</button>
         </form>
-        <div class="success-message" id="successMessage">Данные успешно сохранены!</div>
     
         <script>
        document.getElementById('registrationForm').addEventListener('submit', function(event) {
@@ -109,26 +108,7 @@
                 languageError.textContent = 'Выберите хотя бы один язык программирования.';
                 isValid = false;
             }
-            const formData = new FormData(this);
-           fetch('http://u68669.kubsu-dev.ru/anton2024-cyber.github.io/', {
-            method: 'POST',
-            body: formData
-        })
-           .then(response => {
-            if (response.ok) {
-                // Если ответ успешный, показываем сообщение
-                document.getElementById('success-message').style.display = 'block';
-                this.reset(); // Очищаем форму
-            } else {
-                // Обработка ошибки
-                alert('Произошла ошибка. Пожалуйста, попробуйте позднее.');
-            }
-        })
-           .catch(error => {
-            // Обработка сетевой ошибки
-            alert('Произошла ошибка связи.');
-        });
-          });
+            });
         </script>
 </body>
 </html>
