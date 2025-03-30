@@ -28,7 +28,7 @@
               <input name="dzen" type="radio" value="female" id="gender" required> Ж</p></li>
             <span class="error" id="genderError"></span>
           <li><p>Любимый язык программирования:</p>
-            <select id="favoriteLang" name="favoriteLang[]" multiple="multiple" required>
+            <select id="languages" name="languages[]" multiple="multiple" required>
               <option value="C" name="C">C</option>
               <option value="C++" name="C++">C++</option>
               <option value="JavaScript" name="JavaScript">JavaScript</option>
@@ -42,9 +42,7 @@
               </select></li>
               <span class="error" id="favoriteLangError"></span><br>
               <li><p>Биография:</p>
-                <textarea rows="10" cols="60"
-                      placeholder="Give Feedback here">
-                  </textarea></li>
+                <input type="text" class="form-control" id="bio" name="bio"></li>
               <li>С контрактом ознакомлен(а):<input type="checkbox" name="dogovor" id="dogovor" required/></li>
               <span class="error" id="contractError"></span>
         </ol>
