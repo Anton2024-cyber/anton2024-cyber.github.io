@@ -27,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $pdo->prepare("INSERT INTO applications (full_name, phone, email, birthdate, gender, biography, agreement)
                       VALUES (:name, :phone, :email, :birthdate, :gender, :bio, :contract)");
         $stmt->execute([
-            ':name' => $_POST['name'],
+            ':name' => $_POST['fullName'],
             ':phone' => $_POST['phone'],
             ':email' => $_POST['email'],
-            ':birthdate' => $_POST['birthdate'],
-            ':gender' => $_POST['gender'],
+            ':birthdate' => $_POST['birthDate'],
+            ':gender' => $_POST['dzen'],
             ':bio' => $_POST['bio'],
-            ':contract' => isset($_POST['contract_accepted']) ? 1 : 0
+            ':contract' => isset($_POST['dogovor']) ? 1 : 0
         ]);
         $applicationId = $pdo->lastInsertId();
 $validLanguages = ['Pascal', 'C', 'C++', 'JavaScript', 'PHP', 'Python', 'Java', 'Haskell', 'Clojure', 'Prolog', 'Scala'];
