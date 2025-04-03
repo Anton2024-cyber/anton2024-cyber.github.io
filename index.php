@@ -13,6 +13,7 @@ try {
     die("Ошибка подключения к БД: " . $e->getMessage());
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
     $errors = [];
     if (!empty($errors)) {
         echo "<h2>Ошибки:</h2><ul>";
@@ -73,5 +74,10 @@ if (!empty($selectedLanguages)) {
         }
         die("Ошибка при сохранении данных: " . $e->getMessage());
     }
+    echo "<h1> Thank you </h1>";
+    echo "<p> Your date was saved </p>";
 }
+else {header ("Location: index.html");
+      exit();
+     }
 ?>
