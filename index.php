@@ -5,7 +5,8 @@ $dbname = 'u68669';
 $username = 'u68669';
 $password = '5943600';
 $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
-
+$name='name';
+setcookie("name",$name);
 try {
     $pdo = new PDO($dsn, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
