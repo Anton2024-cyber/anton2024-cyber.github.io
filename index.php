@@ -1,84 +1,262 @@
 <?php
-// Устанавливаем соединение с базой данных
-$host = 'localhost';
-$dbname = 'u68669';
-$username = 'u68669';
-$password = '5943600';
-$dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
-$name='name';
-setcookie("name",$name);
-try {
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Ошибка подключения к БД: " . $e->getMessage());
-}
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
-    $errors = [];
-    if (!empty($errors)) {
-        echo "<h2>Ошибки:</h2><ul>";
-        foreach ($errors as $error) {
-            echo "<li>$error</li>";
-        }
-        echo "</ul>";
-        exit;
-    }
-    try {
-        $pdo->beginTransaction();
-        $stmt = $pdo->prepare("INSERT INTO applications (full_name, phone, email, birthdate, gender, biography, agreement)
-                      VALUES (:name, :phone, :email, :birthdate, :gender, :bio, :contract)");
-        $stmt->execute([
-            ':name' => $_POST['name'],
-            ':phone' => $_POST['phone'],
-            ':email' => $_POST['email'],
-            ':birthdate' => $_POST['birthdate'],
-            ':gender' => $_POST['gender'],
-            ':bio' => $_POST['bio'],
-            ':contract' => isset($_POST['contract_accepted']) ? 1 : 0
-        ]);
-        $applicationId = $pdo->lastInsertId();
-$validLanguages = ['Pascal', 'C', 'C++', 'JavaScript', 'PHP', 'Python', 'Java', 'Haskell', 'Clojure', 'Prolog', 'Scala'];
-$selectedLanguages = array_intersect($_POST['languages'] ?? [], $validLanguages);
+header('Content-Type: text/html; charset=UTF-8');
 
-if (!empty($selectedLanguages)) {
-    $placeholders = rtrim(str_repeat('?,', count($selectedLanguages)), ',');
-    $stmt = $pdo->prepare("SELECT id, name FROM languages WHERE name IN ($placeholders)");
-    $stmt->execute($selectedLanguages);
-    $existingLanguages = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-    $missingLanguages = array_diff($selectedLanguages, array_keys($existingLanguages));
-    if (!empty($missingLanguages)) {
-        $stmt = $pdo->prepare("INSERT IGNORE INTO languages (name) VALUES (?)");
-        foreach ($missingLanguages as $lang) {
-            $stmt->execute([$lang]);
-            if ($stmt->rowCount() > 0) {
-                $existingLanguages[$lang] = $pdo->lastInsertId();
-            } else {
-                $stmtSelect = $pdo->prepare("SELECT id FROM languages WHERE name = ?");
-                $stmtSelect->execute([$lang]);
-                $existingLanguages[$lang] = $stmtSelect->fetchColumn();
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    // Массив для временного хранения сообщений пользователю.
+    $messages = array();
+  
+
+    if (!empty($_COOKIE['save'])) {
+      setcookie('save', '', 100000);
+      $messages[] = 'Данные сохранены.';
+    }
+  
+    // Складываем признак ошибок в массив.
+    $errors = array();
+    $errors['fio'] = !empty($_COOKIE['fio_error']);
+    $errors['fio_f'] = !empty($_COOKIE['fio_error_f']);
+    $errors['tel'] = !empty($_COOKIE['tel_error']);
+    $errors['tel_f'] = !empty($_COOKIE['tel_error_f']);
+    $errors['tel_n'] = !empty($_COOKIE['tel_error_n']);
+    $errors['familiar'] = !empty($_COOKIE['familiar_error']);
+    $errors['email'] = !empty($_COOKIE['email_error']);
+    $errors['email_f'] = !empty($_COOKIE['email_error_f']);
+    $errors['birth_date'] = !empty($_COOKIE['birth_date_error']);
+    $errors['gender'] = !empty($_COOKIE['gender_error']);
+    $errors['favlangs'] = !empty($_COOKIE['favlangs_error']);
+    $errors['bio'] = !empty($_COOKIE['bio_error']);
+
+    if ($errors['fio']) {
+      setcookie('fio_error', '', 100000);
+      setcookie('fio_value', '', 100000);
+      $messages[] = '<div class="error">Заполните имя.</div>';
+    }
+    if ($errors['fio_f']) {
+        setcookie('fio_error_f', '', 100000);
+        setcookie('fio_value', '', 100000);
+        $messages[] = '<div class="error">Имя может содержать только буквы и пробелы.</div>';
+    }
+    
+    if ($errors['tel']) {
+        setcookie('tel_error', '', 100000);
+        setcookie('tel_value', '', 100000);
+        $messages[] = '<div class="error">Заполните телефон.</div>';
+    }
+    if ($errors['tel_f']) {
+        setcookie('tel_error_f', '', 100000);
+        setcookie('tel_value', '', 100000);
+        $messages[] = '<div class="error">Телефон должен начинаться с "+"</div>';
+    }
+    if ($errors['tel_n']) {
+        setcookie('tel_error_s', '', 100000);
+        setcookie('tel_value', '', 100000);
+        $messages[] = '<div class="error">Телефон должен содержать только цифры.</div>';
+    }
+    if ($errors['familiar']) {
+        setcookie('familiar_error', '', 100000);
+        setcookie('familiar_value', '', 100000);
+        $messages[] = '<div class="error">Ознакомьтесь с контрактом.</div>';
+    }
+    if ($errors['email']) {
+        setcookie('email_error', '', 100000);
+        setcookie('email_value', '', 100000);
+        $messages[] = '<div class="error">Заполните почту.</div>';
+    }
+    if ($errors['email_f']) {
+        setcookie('email_error_f', '', 100000);
+        setcookie('email_value', '', 100000);
+        $messages[] = '<div class="error">Почта может содержать только латинские буквы, "@" и цифры</div>';
+    }
+    if ($errors['birth_date']) {
+        setcookie('birth_date_error', '', 100000);
+        setcookie('birth_date_value', '', 100000);
+        $messages[] = '<div class="error">Заполните дату рождения.</div>';
+    }
+    if ($errors['gender']) {
+        setcookie('gender_error', '', 100000);
+        setcookie('gender_value', '', 100000);
+        $messages[] = '<div class="error">Укажите пол.</div>';
+    }
+    if ($errors['favlangs']) {
+        setcookie('favlangs_error', '', 100000);
+        setcookie('favlangs_value', '', 100000);
+        $messages[] = '<div class="error">Выберите любимые языки.</div>';
+    }
+    if ($errors['bio']) {
+        setcookie('bio_error', '', 100000);
+        setcookie('bio_value', '', 100000);
+        $messages[] = '<div class="error">Заполните биографию.</div>';
+    }
+    
+  
+    // Складываем предыдущие значения полей в массив, если есть.
+    $values = array();
+    $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
+    $values['tel'] = empty($_COOKIE['tel_value']) ? '' : $_COOKIE['tel_value'];
+    $values['familiar'] = empty($_COOKIE['familiar_value']) ? '' : $_COOKIE['familiar_value'];
+    $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+    $values['birth_date'] = empty($_COOKIE['birth_date_value']) ? '' : $_COOKIE['birth_date_value'];
+    $values['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
+    $values['favlangs'] = empty($_COOKIE['favlangs_value']) ? '' : $_COOKIE['favlangs_value'];
+    $values['bio'] = empty($_COOKIE['bio_value']) ? 'Впишите свою биографию.' : $_COOKIE['bio_value'];
+    
+  
+    // Включаем содержимое файла form.php.
+    // В нем будут доступны переменные $messages, $errors и $values для вывода 
+    include('index.php');
+  }
+else {
+    $errors = FALSE;
+
+    if (empty($_POST['Fio'])) {
+      setcookie('fio_error', '1');
+      $errors = TRUE;
+    }
+    else {
+      $fio = trim($_POST["Fio"]);
+      if (!preg_match("/^[a-zA-Zа-яА-ЯёЁ\s]+$/u", $fio)) {
+        setcookie('fio_error_f', '1');
+        $errors = TRUE;
+      }
+      if (strlen($fio) < 10 || strlen($fio) > 50) {
+        setcookie('fio_error_s', '1');
+        $errors = TRUE;
+      }
+    }
+
+    if (empty($_POST['Tel'])) {
+        setcookie('tel_error', '1');
+        $errors = TRUE;
+    }
+    else {
+        $tel = trim($_POST["Tel"]);
+        if (!preg_match("/^\+[0-9]+$/u", $tel)) {
+          setcookie('tel_error_f', '1');
+          $errors = TRUE;
+        }
+        if (strlen($tel) < 10 || strlen($tel) > 20) {
+          setcookie('tel_error_s', '1');
+          $errors = TRUE;
+        }
+    }
+
+    if (empty($_POST['Familiar'])) {
+        setcookie('familiar_error', '1');
+        $errors = TRUE;
+    }
+
+    if (empty($_POST['Email'])) {
+        setcookie('email_error', '1');
+        $errors = TRUE;
+    }
+    else {
+        $email = trim($_POST["Email"]);
+        if (!preg_match("/^[a-zA-Z0-9@.]+$/u", $email)) {
+          setcookie('email_error_f', '1');
+          $errors = TRUE;
+        }
+        if (strpos($email, '@') === false) {
+          setcookie('email_error_s', '1');
+          $errors = TRUE;
+        }
+    }
+
+    if (empty($_POST['Birth_date'])) {
+        setcookie('birth_date_error', '1');
+        $errors = TRUE;
+    }
+
+    if (empty($_POST['Gender'])) {
+        setcookie('gender_error', '1');
+        $errors = TRUE;
+    }
+
+    if (empty($_POST['Favlangs'])) {
+        setcookie('favlangs_error', '1');
+        $errors = TRUE;
+    }
+
+    if (empty($_POST['Bio'])) {
+        setcookie('bio_error', '1');
+        $errors = TRUE;
+    } 
+    $v = time() + 365 * 24 * 60 * 60;
+    setcookie('fio_value', $_POST['Fio'], $v);
+    setcookie('tel_value', $_POST['Tel'], $v);
+    setcookie('familiar_value', $_POST['Familiar'], $v);
+    setcookie('email_value', $_POST['Email'], $v);
+    setcookie('birth_date_value', $_POST['Birth_date'], $v);
+    setcookie('gender_value', $_POST['Gender'], $v);
+    $favlangs = $_POST["Favlangs"];
+    $result = '';
+    foreach($favlangs as $item){
+        $result .= $item.' ';
+    }
+    setcookie('favlangs_value', $result, $v);
+    setcookie('bio_value', $_POST['Bio'], $v);
+    
+  
+
+    if ($errors) {
+      header('Location: input.php');
+      exit();
+    }
+    else {
+      setcookie('fio_error', '', 100000);
+      setcookie('fio_error_f', '', 100000);
+      setcookie('tel_error', '', 100000);
+      setcookie('tel_error_f', '', 100000);
+      setcookie('tel_error_n', '', 100000);
+      setcookie('familiar_error', '', 100000);
+      setcookie('email_error', '', 100000);
+      setcookie('email_error_f', '', 100000);
+      setcookie('birth_date_error', '', 100000);
+      setcookie('gender_error', '', 100000);
+      setcookie('favlangs_error', '', 100000);
+      setcookie('bio_error', '', 100000);
+      
+    }
+  
+    $fio = trim($_POST["Fio"]);
+    $tel = trim($_POST["Tel"]);
+    if(!isset($_POST["Familiar"])) die("Ознакомьтесь с контрактом");
+    $email = trim($_POST["Email"]);
+    $birth_date = trim($_POST["Birth_date"]);
+    $gender = trim($_POST["Gender"]);
+    $favlangs = $_POST["Favlangs"];
+    $bio = trim($_POST["Bio"]);
+
+
+    $conn = new mysqli("localhost", "u68676", "8999741", "u68676");
+    if($conn->connect_error){
+        die("Ошибка: " . $conn->connect_error);
+    }
+    $stmt = $conn->prepare("INSERT INTO forms (fio, tel, email, gender, birth_date, bio) VALUES (?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        die("Ошибка подготовки запроса: " . $conn->error);
+    }
+
+    $stmt->bind_param("ssssss", $fio, $tel, $email, $gender, $birth_date, $bio);
+    if ($stmt->execute()) {
+        $last_id = $conn->insert_id;
+        foreach($favlangs as $item) {
+            $stmt = $conn->prepare("INSERT INTO favlangs (id, id_lang) VALUES (?, ?)");
+            if (!$stmt) {
+                die("Ошибка подготовки запроса: " . $conn->error);
+            }
+            $stmt->bind_param("ii", $last_id, $item);
+            if (!$stmt->execute()) {
+                die("Ошибка при добавлении данных: " . $stmt->error);
             }
         }
-    }
 
-    $stmt = $pdo->prepare("INSERT IGNORE INTO application_languages (application_id, language_id) VALUES (?, ?)");
-    foreach ($existingLanguages as $langId) {
-        $stmt->execute([$applicationId, $langId]);
+    } else {
+        die("Ошибка при добавлении данных: " . $stmt->error);
     }
-}
-        $pdo->commit();
-        header("Location: index.html?success=1");
-        exit;
-    } catch (PDOException $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        die("Ошибка при сохранении данных: " . $e->getMessage());
-    }
-    echo "<h1> Thank you </h1>";
-    echo "<p> Your date was saved </p>";
-}
-else {header ("Location: index.html");
-      exit();
-     }
+  
+    setcookie('save', '1');
+  
+    header('Location: input.php');
+  }
 ?>
+
