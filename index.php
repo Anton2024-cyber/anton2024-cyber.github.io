@@ -25,22 +25,22 @@ $checkboxes = $_POST['checkbox_field'] ?? [];
 
 // Валидация имени
 if (!preg_match($namePattern, $name)) {
-    $errors['name'] = "Допустимые символы: буквы и пробелы.";
+    $errors['name'] = "Имя может содержать буквы и пробелы.";
 }
 
 // Валидация email
 if (!preg_match($emailPattern, $email)) {
-    $errors['email'] = "Введите корректный email.";
+    $errors['email'] = "Email может содержать только @,латинские буквы и цифры.";
 }
 
 // Валидация номера телефона
 if (!preg_match($phonePattern, $phone)) {
-    $errors['phone'] = "Введите корректный номер телефона в формате +7 (999) 999-99-99.";
+    $errors['phone'] = "Номер телефона должен быть в формате +7 (***) ***-**-**.";
 }
 
 // Валидация даты рождения
 if (!preg_match($datePattern, $date_of_birth)) {
-    $errors['date_of_birth'] = "Введите дату рождения в формате YYYY-MM-DD.";
+    $errors['date_of_birth'] = "Введите дату рождения.";
 }
 
 // Валидация пола
@@ -55,12 +55,12 @@ if (!preg_match($bioPattern, $bio)) {
 
 // Валидация множественного выбора
 if (empty($options)) {
-    $errors['options'] = "Выберите хотя бы одну опцию.";
+    $errors['options'] = "Выберите хотя бы один язык.";
 }
 
 // Валидация чекбоксов
 if (empty($checkboxes)) {
-    $errors['checkbox'] = "Выберите хотя бы один чекбокс.";
+    $errors['checkbox'] = "Поставте галочку.";
 }
 
 // Если есть ошибки, сохраняем их в Cookies и перенаправляем обратно
