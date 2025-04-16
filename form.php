@@ -1,100 +1,96 @@
 <?php
 session_start();
 
-// Удаляем сообщения об ошибках из Cookies
-if (isset($_COOKIE['name_error'])) {
-    setcookie('name_error', '', time() - 3600, '/');
+// Функция для очистки данных
+function cleanInput($data) {
+    return htmlspecialchars(trim($data));
 }
-if (isset($_COOKIE['email_error'])) {
-    setcookie('email_error', '', time() - 3600, '/');
+
+// Регулярные выражения для валидации
+$namePattern = "/^[a-zA-Zа-яА-ЯёЁ\s]+$/u"; // Имя: только буквы и пробелы
+$emailPattern = "/^[\w\.-]+@[\w\.-]+\.\w+$/"; // Email: стандартный формат
+$phonePattern = "/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/"; // Номер телефона: +7 (999) 999-99-99
+$datePattern = "/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/"; // Дата рождения: YYYY-MM-DD
+$bioPattern = "/^[a-zA-Zа-яА-ЯёЁ0-9\s.,!?;:'\"-]*$/u"; // Биография: буквы, цифры и некоторые знаки
+
+$errors = [];
+$name = cleanInput($_POST['name'] ?? '');
+$email = cleanInput($_POST['email'] ?? '');
+$phone = cleanInput($_POST['phone'] ?? '');
+$date_of_birth = cleanInput($_POST['date_of_birth'] ?? '');
+$gender = $_POST['gender'] ?? '';
+$bio = cleanInput($_POST['bio'] ?? '');
+$options = $_POST['options'] ?? [];
+$agreement = isset($_POST['agreement']) ? true : false;
+
+// Валидация имени
+if (!preg_match($namePattern, $name)) {
+    $errors['name'] = "Допустимые символы: буквы и пробелы.";
 }
-if (isset($_COOKIE['phone_error'])) {
-    setcookie('phone_error', '', time() - 3600, '/');
+
+// Валидация email
+if (!preg_match($emailPattern, $email)) {
+    $errors['email'] = "Введите корректный email.";
 }
-if (isset($_COOKIE['date_of_birth_error'])) {
-    setcookie('date_of_birth_error', '', time() - 3600, '/');
+
+// Валидация номера телефона
+if (!preg_match($phonePattern, $phone)) {
+    $errors['phone'] = "Введите корректный номер телефона в формате +7 (999) 999-99-99.";
 }
-if (isset($_COOKIE['gender_error'])) {
-    setcookie('gender_error', '', time() - 3600, '/');
+
+// Валидация даты рождения
+if (!preg_match($datePattern, $date_of_birth)) {
+    $errors['date_of_birth'] = "Введите дату рождения в формате YYYY-MM-DD.";
 }
-if (isset($_COOKIE['bio_error'])) {
-    setcookie('bio_error', '', time() - 3600, '/');
+
+// Валидация пола
+if (empty($gender)) {
+    $errors['gender'] = "Выберите пол.";
 }
-if (isset($_COOKIE['options_error'])) {
-    setcookie('options_error', '', time() - 3600, '/');
+
+// Валидация биографии
+if (!preg_match($bioPattern, $bio)) {
+    $errors['bio'] = "Биография может содержать только буквы, цифры и некоторые знаки.";
 }
-if (isset($_COOKIE['agreement_error'])) {
-    setcookie('agreement_error', '', time() - 3600, '/');
+
+// Валидация множественного выбора
+if (empty($options)) {
+    $errors['options'] = "Выберите хотя бы один язык программирования.";
 }
+if (!$agreement) {
+    $errors['agreement'] = "Вы должны согласиться с условиями.";
+}
+
+// Если есть ошибки, сохраняем их в Cookies и перенаправляем обратно
+if (!empty($errors)) {
+    foreach ($errors as $field => $error) {
+        setcookie("{$field}_error", $error, 0, "/");
+    }
+    setcookie("name", $name, 0, "/");
+    setcookie("email", $email, 0, "/");
+    setcookie("phone", $phone, 0, "/");
+    setcookie("date_of_birth", $date_of_birth, 0, "/");
+    setcookie("gender", $gender, 0, "/");
+    setcookie("bio", $bio, 0, "/");
+    setcookie('options', serialize($options), 0, "/");
+    setcookie('agreement', $agreement ? '1' : '0', 0, "/");
+
+    // Перенаправляем обратно на форму
+    header("Location: index.php");
+    exit();
+}
+
+// Если ошибок нет, сохраняем данные в Cookies на год
+setcookie("name", $name, time() + (365 * 24 * 60 * 60), "/");
+setcookie("email", $email, time() + (365 * 24 * 60 * 60), "/");
+setcookie("phone", $phone, time() + (365 * 24 * 60 * 60), "/");
+setcookie("date_of_birth", $date_of_birth, time() + (365 * 24 * 60 * 60), "/");
+setcookie("gender", $gender, time() + (365 * 24 * 60 * 60), "/");
+setcookie("bio", $bio, time() + (365 * 24 * 60 * 60), "/");
+setcookie('options', serialize($options), time() + (365 * 24 * 60 * 60), "/");
+setcookie('agreement', $agreement ? '1' : '0', time() + (365 * 24 * 60 * 60), "/");
+
+// Успешная обработка
+header("Location: success.php");
+exit();
 ?>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Форма</title>
-    <style>
-        .error { color: red; }
-        .invalid { border: 1px solid red; }
-    </style>
-</head>
-<body>
-    <h1>Заполните форму</h1>
-    <form method="POST" action="index.php">
-        <label for="name">Имя:</label>
-        <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($_COOKIE['name'] ?? ''); ?>" class="<?php echo isset($_COOKIE['name_error']) ? 'invalid' : ''; ?>">
-        <span class="error"><?php echo $_COOKIE['name_error'] ?? ''; ?></span>
-        <br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($_COOKIE['email'] ?? ''); ?>" class="<?php echo isset($_COOKIE['email_error']) ? 'invalid' : ''; ?>">
-        <span class="error"><?php echo $_COOKIE['email_error'] ?? ''; ?></span>
-        <br>
-
-        <label for="phone">Номер телефона:</label>
-        <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($_COOKIE['phone'] ?? ''); ?>" class="<?php echo isset($_COOKIE['phone_error']) ? 'invalid' : ''; ?>">
-        <span class="error"><?php echo $_COOKIE['phone_error'] ?? ''; ?></span>
-        <br>
-
-        <label for="date_of_birth">Дата рождения:</label>
-        <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($_COOKIE['date_of_birth'] ?? ''); ?>" class="<?php echo isset($_COOKIE['date_of_birth_error']) ? 'invalid' : ''; ?>">
-        <span class="error"><?php echo $_COOKIE['date_of_birth_error'] ?? ''; ?></span>
-        <br>
-
-        <label>Пол:</label>
-        <input type="radio" name="gender" value="male" <?php echo (isset($_COOKIE['gender']) && $_COOKIE['gender'] == 'male') ? 'checked' : ''; ?>> Мужской
-        <input type="radio" name="gender" value="female" <?php echo (isset($_COOKIE['gender']) && $_COOKIE['gender'] == 'female') ? 'checked' : ''; ?>> Женский
-        <span class="error"><?php echo $_COOKIE['gender_error'] ?? ''; ?></span>
-        <br>
-
-        <label for="bio">Биография:</label>
-        <textarea id="bio" name="bio" class="<?php echo isset($_COOKIE['bio_error']) ? 'invalid' : ''; ?>"><?php echo htmlspecialchars($_COOKIE['bio'] ?? ''); ?></textarea>
-        <span class="error"><?php echo $_COOKIE['bio_error'] ?? ''; ?></span>
-        <br>
-
-        <label for="options">Выберите любимые языки программирования:</label>
-<select id="options" name="options[]" multiple class="<?php echo isset($_COOKIE['options_error']) ? 'invalid' : ''; ?>">
-            <option value="C" <?php echo (isset($_COOKIE['options']) && in_array('php', $_COOKIE['options'])) ? 'selected' : ''; ?>>C</option>
-            <option value="C++" <?php echo (isset($_COOKIE['options']) && in_array('php', $_COOKIE['options'])) ? 'selected' : ''; ?>>C++</option>
-            <option value="javascript" <?php echo (isset($_COOKIE['options']) && in_array('javascript', $_COOKIE['options'])) ? 'selected' : ''; ?>>JavaScript</option>
-            <option value="php" <?php echo (isset($_COOKIE['options']) && in_array('php', $_COOKIE['options'])) ? 'selected' : ''; ?>>PHP</option>
-            <option value="python" <?php echo (isset($_COOKIE['options']) && in_array('python', $_COOKIE['options'])) ? 'selected' : ''; ?>>Python</option>
-            <option value="java" <?php echo (isset($_COOKIE['options']) && in_array('java', $_COOKIE['options'])) ? 'selected' : ''; ?>>Java</option>
-            <option value="haskel" <?php echo (isset($_COOKIE['options']) && in_array('java', $_COOKIE['options'])) ? 'selected' : ''; ?>>Haskel</option>
-            <option value="clojure" <?php echo (isset($_COOKIE['options']) && in_array('java', $_COOKIE['options'])) ? 'selected' : ''; ?>>Clojure</option>
-            <option value="prolog" <?php echo (isset($_COOKIE['options']) && in_array('java', $_COOKIE['options'])) ? 'selected' : ''; ?>>Prolog</option>
-            <option value="scala" <?php echo (isset($_COOKIE['options']) && in_array('java', $_COOKIE['options'])) ? 'selected' : ''; ?>>Scala</option>
-        </select>
-        <span class="error"><?php echo $_COOKIE['options_error'] ?? ''; ?></span>
-        <br>
-
-        <label>
-            <input type="checkbox" name="agreement" <?php echo isset($_COOKIE['agreement']) ? 'checked' : ''; ?>> С контрактом ознакомлен (-а):
-        </label>
-        <span class="error"><?php echo $_COOKIE['agreement_error'] ?? ''; ?></span>
-        <br>
-
-        <input type="submit" value="Сохранить">
-    </form>
-</body>
-</html>
