@@ -25,22 +25,22 @@ $agreement = isset($_POST['agreement']) ? true : false;
 
 // Валидация имени
 if (!preg_match($namePattern, $name)) {
-    $errors['name'] = "Допустимые символы: буквы и пробелы.";
+    $errors['name'] = "Имя должно содержать буквы и пробелы.";
 }
 
 // Валидация email
 if (!preg_match($emailPattern, $email)) {
-    $errors['email'] = "Введите корректный email.";
+    $errors['email'] = "Email должен содержать латинские буквы, @ и цифры.";
 }
 
 // Валидация номера телефона
 if (!preg_match($phonePattern, $phone)) {
-    $errors['phone'] = "Введите корректный номер телефона в формате +7 (999) 999-99-99.";
+    $errors['phone'] = "Номер телефона в формате +7 (999) 999-99-99.";
 }
 
 // Валидация даты рождения
 if (!preg_match($datePattern, $date_of_birth)) {
-    $errors['date_of_birth'] = "Введите дату рождения в формате YYYY-MM-DD.";
+    $errors['date_of_birth'] = "Введите дату рождения.";
 }
 
 // Валидация пола
@@ -50,7 +50,7 @@ if (empty($gender)) {
 
 // Валидация биографии
 if (!preg_match($bioPattern, $bio)) {
-    $errors['bio'] = "Биография может содержать только буквы, цифры и некоторые знаки.";
+    $errors['bio'] = "Биография может содержать только буквы, цифры и знаки препинания.";
 }
 
 // Валидация множественного выбора
@@ -58,7 +58,7 @@ if (empty($options)) {
     $errors['options'] = "Выберите хотя бы один язык программирования.";
 }
 if (!$agreement) {
-    $errors['agreement'] = "Вы должны согласиться с условиями.";
+    $errors['agreement'] = "Вы должны поставить галочку.";
 }
 
 // Если есть ошибки, сохраняем их в Cookies и перенаправляем обратно
