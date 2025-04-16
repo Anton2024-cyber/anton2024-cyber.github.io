@@ -42,7 +42,7 @@
         <span class="error"><?php echo $_COOKIE['bio_error'] ?? ''; ?></span>
         <br>
 
-        <label for="options">Выберите опции:</label>
+        <label for="options">Выбирете язык:</label>
         <select id="options" name="options[]" multiple class="<?php echo isset($_COOKIE['options_error']) ? 'invalid' : ''; ?>">
             <option value="option1" <?php echo (isset($_COOKIE['options']) && in_array('option1', $_COOKIE['options'])) ? 'selected' : ''; ?>>C</option>
             <option value="option2" <?php echo (isset($_COOKIE['options']) && in_array('option2', $_COOKIE['options'])) ? 'selected' : ''; ?>>C++</option>
