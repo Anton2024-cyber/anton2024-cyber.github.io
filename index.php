@@ -21,26 +21,26 @@ $date_of_birth = cleanInput($_POST['date_of_birth'] ?? '');
 $gender = $_POST['gender'] ?? '';
 $bio = cleanInput($_POST['bio'] ?? '');
 $options = $_POST['options'] ?? [];
-$checkboxes = cleanInput($_POST['checkbox_field'] ?? '');
+$agreement = isset($_POST['agreement']) ? true : false;
 
 // Валидация имени
 if (!preg_match($namePattern, $name)) {
-    $errors['name'] = "Имя может содержать буквы и пробелы.";
+    $errors['name'] = "Допустимые символы: буквы и пробелы.";
 }
 
 // Валидация email
 if (!preg_match($emailPattern, $email)) {
-    $errors['email'] = "Email может содержать только @,латинские буквы и цифры.";
+    $errors['email'] = "Введите корректный email.";
 }
 
 // Валидация номера телефона
 if (!preg_match($phonePattern, $phone)) {
-    $errors['phone'] = "Номер телефона должен быть в формате +7 (***) ***-**-**.";
+    $errors['phone'] = "Введите корректный номер телефона в формате +7 (999) 999-99-99.";
 }
 
 // Валидация даты рождения
 if (!preg_match($datePattern, $date_of_birth)) {
-    $errors['date_of_birth'] = "Введите дату рождения.";
+    $errors['date_of_birth'] = "Введите дату рождения в формате YYYY-MM-DD.";
 }
 
 // Валидация пола
@@ -55,12 +55,10 @@ if (!preg_match($bioPattern, $bio)) {
 
 // Валидация множественного выбора
 if (empty($options)) {
-    $errors['options'] = "Выберите хотя бы один язык.";
+    $errors['options'] = "Выберите хотя бы один язык программирования.";
 }
-
-// Валидация чекбоксов
-if (empty($checkboxes)) {
-    $errors['checkbox'] = "Поставте галочку.";
+if (!$agreement) {
+    $errors['agreement'] = "Вы должны согласиться с условиями.";
 }
 
 // Если есть ошибки, сохраняем их в Cookies и перенаправляем обратно
@@ -75,7 +73,7 @@ if (!empty($errors)) {
     setcookie("gender", $gender, 0, "/");
     setcookie("bio", $bio, 0, "/");
     setcookie('options', serialize($options), 0, "/");
-    setcookie('checkboxes', serialize($checkboxes), 0, "/");
+    setcookie('agreement', $agreement ? '1' : '0', 0, "/");
 
     // Перенаправляем обратно на форму
     header("Location: form.php");
@@ -90,8 +88,9 @@ setcookie("date_of_birth", $date_of_birth, time() + (365 * 24 * 60 * 60), "/");
 setcookie("gender", $gender, time() + (365 * 24 * 60 * 60), "/");
 setcookie("bio", $bio, time() + (365 * 24 * 60 * 60), "/");
 setcookie('options', serialize($options), time() + (365 * 24 * 60 * 60), "/");
-setcookie('checkboxes', serialize($checkboxes), time() + (365 * 24 * 60 * 60), "/");
+setcookie('agreement', $agreement ? '1' : '0', time() + (365 * 24 * 60 * 60), "/");
 
 // Успешная обработка
-echo "Форма успешно отправлена!";
+header("Location: success.php");
+exit();
 ?>
