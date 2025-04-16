@@ -65,7 +65,7 @@ session_start();
         <span class="error"><?php echo $_COOKIE['checkbox_error'] ?? ''; ?></span>
         <br>
 
-        <button type="submit" value="Отправить"> Сохранить</button>
+        <input type="submit" value="Отправить">
     </form>
 </body>
 </html>
