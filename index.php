@@ -21,7 +21,7 @@ $date_of_birth = cleanInput($_POST['date_of_birth'] ?? '');
 $gender = $_POST['gender'] ?? '';
 $bio = cleanInput($_POST['bio'] ?? '');
 $options = $_POST['options'] ?? [];
-$checkboxes = $_POST['checkbox_field'] ?? [];
+$checkboxes = cleanInput($_POST['checkbox_field'] ?? '');
 
 // Валидация имени
 if (!preg_match($namePattern, $name)) {
