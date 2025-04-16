@@ -40,7 +40,7 @@ if (isset($_COOKIE['agreement_error'])) {
 </head>
 <body>
     <h1>Заполните форму</h1>
-    <form method="POST" action="process.php">
+    <form method="POST" action="index.php">
         <label for="name">Имя:</label>
         <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($_COOKIE['name'] ?? ''); ?>" class="<?php echo isset($_COOKIE['name_error']) ? 'invalid' : ''; ?>">
         <span class="error"><?php echo $_COOKIE['name_error'] ?? ''; ?></span>
