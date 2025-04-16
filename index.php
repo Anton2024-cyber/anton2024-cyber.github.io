@@ -1,262 +1,97 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8');
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    // Массив для временного хранения сообщений пользователю.
-    $messages = array();
-  
+// Функция для очистки данных
+function cleanInput($data) {
+    return htmlspecialchars(trim($data));
+}
 
-    if (!empty($_COOKIE['save'])) {
-      setcookie('save', '', 100000);
-      $messages[] = 'Данные сохранены.';
-    }
-  
-    // Складываем признак ошибок в массив.
-    $errors = array();
-    $errors['fio'] = !empty($_COOKIE['fio_error']);
-    $errors['fio_f'] = !empty($_COOKIE['fio_error_f']);
-    $errors['tel'] = !empty($_COOKIE['tel_error']);
-    $errors['tel_f'] = !empty($_COOKIE['tel_error_f']);
-    $errors['tel_n'] = !empty($_COOKIE['tel_error_n']);
-    $errors['familiar'] = !empty($_COOKIE['familiar_error']);
-    $errors['email'] = !empty($_COOKIE['email_error']);
-    $errors['email_f'] = !empty($_COOKIE['email_error_f']);
-    $errors['birth_date'] = !empty($_COOKIE['birth_date_error']);
-    $errors['gender'] = !empty($_COOKIE['gender_error']);
-    $errors['favlangs'] = !empty($_COOKIE['favlangs_error']);
-    $errors['bio'] = !empty($_COOKIE['bio_error']);
+// Регулярные выражения для валидации
+$namePattern = "/^[a-zA-Zа-яА-ЯёЁ\s]+$/u"; // Имя: только буквы и пробелы
+$emailPattern = "/^[\w\.-]+@[\w\.-]+\.\w+$/"; // Email: стандартный формат
+$phonePattern = "/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/"; // Номер телефона: +7 (999) 999-99-99
+$datePattern = "/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/"; // Дата рождения: YYYY-MM-DD
+$bioPattern = "/^[a-zA-Zа-яА-ЯёЁ0-9\s.,!?;:'\"-]*$/u"; // Биография: буквы, цифры и некоторые знаки
 
-    if ($errors['fio']) {
-      setcookie('fio_error', '', 100000);
-      setcookie('fio_value', '', 100000);
-      $messages[] = '<div class="error">Заполните имя.</div>';
-    }
-    if ($errors['fio_f']) {
-        setcookie('fio_error_f', '', 100000);
-        setcookie('fio_value', '', 100000);
-        $messages[] = '<div class="error">Имя может содержать только буквы и пробелы.</div>';
-    }
-    
-    if ($errors['tel']) {
-        setcookie('tel_error', '', 100000);
-        setcookie('tel_value', '', 100000);
-        $messages[] = '<div class="error">Заполните телефон.</div>';
-    }
-    if ($errors['tel_f']) {
-        setcookie('tel_error_f', '', 100000);
-        setcookie('tel_value', '', 100000);
-        $messages[] = '<div class="error">Телефон должен начинаться с "+"</div>';
-    }
-    if ($errors['tel_n']) {
-        setcookie('tel_error_s', '', 100000);
-        setcookie('tel_value', '', 100000);
-        $messages[] = '<div class="error">Телефон должен содержать только цифры.</div>';
-    }
-    if ($errors['familiar']) {
-        setcookie('familiar_error', '', 100000);
-        setcookie('familiar_value', '', 100000);
-        $messages[] = '<div class="error">Ознакомьтесь с контрактом.</div>';
-    }
-    if ($errors['email']) {
-        setcookie('email_error', '', 100000);
-        setcookie('email_value', '', 100000);
-        $messages[] = '<div class="error">Заполните почту.</div>';
-    }
-    if ($errors['email_f']) {
-        setcookie('email_error_f', '', 100000);
-        setcookie('email_value', '', 100000);
-        $messages[] = '<div class="error">Почта может содержать только латинские буквы, "@" и цифры</div>';
-    }
-    if ($errors['birth_date']) {
-        setcookie('birth_date_error', '', 100000);
-        setcookie('birth_date_value', '', 100000);
-        $messages[] = '<div class="error">Заполните дату рождения.</div>';
-    }
-    if ($errors['gender']) {
-        setcookie('gender_error', '', 100000);
-        setcookie('gender_value', '', 100000);
-        $messages[] = '<div class="error">Укажите пол.</div>';
-    }
-    if ($errors['favlangs']) {
-        setcookie('favlangs_error', '', 100000);
-        setcookie('favlangs_value', '', 100000);
-        $messages[] = '<div class="error">Выберите любимые языки.</div>';
-    }
-    if ($errors['bio']) {
-        setcookie('bio_error', '', 100000);
-        setcookie('bio_value', '', 100000);
-        $messages[] = '<div class="error">Заполните биографию.</div>';
-    }
-    
-  
-    // Складываем предыдущие значения полей в массив, если есть.
-    $values = array();
-    $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
-    $values['tel'] = empty($_COOKIE['tel_value']) ? '' : $_COOKIE['tel_value'];
-    $values['familiar'] = empty($_COOKIE['familiar_value']) ? '' : $_COOKIE['familiar_value'];
-    $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
-    $values['birth_date'] = empty($_COOKIE['birth_date_value']) ? '' : $_COOKIE['birth_date_value'];
-    $values['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
-    $values['favlangs'] = empty($_COOKIE['favlangs_value']) ? '' : $_COOKIE['favlangs_value'];
-    $values['bio'] = empty($_COOKIE['bio_value']) ? 'Впишите свою биографию.' : $_COOKIE['bio_value'];
-    
-  
-    // Включаем содержимое файла form.php.
-    // В нем будут доступны переменные $messages, $errors и $values для вывода 
-    include('index.php');
-  }
-else {
-    $errors = FALSE;
+$errors = [];
+$name = cleanInput($_POST['name'] ?? '');
+$email = cleanInput($_POST['email'] ?? '');
+$phone = cleanInput($_POST['phone'] ?? '');
+$date_of_birth = cleanInput($_POST['date_of_birth'] ?? '');
+$gender = $_POST['gender'] ?? '';
+$bio = cleanInput($_POST['bio'] ?? '');
+$options = $_POST['options'] ?? [];
+$checkboxes = $_POST['checkbox_field'] ?? [];
 
-    if (empty($_POST['Fio'])) {
-      setcookie('fio_error', '1');
-      $errors = TRUE;
-    }
-    else {
-      $fio = trim($_POST["Fio"]);
-      if (!preg_match("/^[a-zA-Zа-яА-ЯёЁ\s]+$/u", $fio)) {
-        setcookie('fio_error_f', '1');
-        $errors = TRUE;
-      }
-      if (strlen($fio) < 10 || strlen($fio) > 50) {
-        setcookie('fio_error_s', '1');
-        $errors = TRUE;
-      }
-    }
+// Валидация имени
+if (!preg_match($namePattern, $name)) {
+    $errors['name'] = "Допустимые символы: буквы и пробелы.";
+}
 
-    if (empty($_POST['Tel'])) {
-        setcookie('tel_error', '1');
-        $errors = TRUE;
-    }
-    else {
-        $tel = trim($_POST["Tel"]);
-        if (!preg_match("/^\+[0-9]+$/u", $tel)) {
-          setcookie('tel_error_f', '1');
-          $errors = TRUE;
-        }
-        if (strlen($tel) < 10 || strlen($tel) > 20) {
-          setcookie('tel_error_s', '1');
-          $errors = TRUE;
-        }
-    }
+// Валидация email
+if (!preg_match($emailPattern, $email)) {
+    $errors['email'] = "Введите корректный email.";
+}
 
-    if (empty($_POST['Familiar'])) {
-        setcookie('familiar_error', '1');
-        $errors = TRUE;
-    }
+// Валидация номера телефона
+if (!preg_match($phonePattern, $phone)) {
+    $errors['phone'] = "Введите корректный номер телефона в формате +7 (999) 999-99-99.";
+}
 
-    if (empty($_POST['Email'])) {
-        setcookie('email_error', '1');
-        $errors = TRUE;
-    }
-    else {
-        $email = trim($_POST["Email"]);
-        if (!preg_match("/^[a-zA-Z0-9@.]+$/u", $email)) {
-          setcookie('email_error_f', '1');
-          $errors = TRUE;
-        }
-        if (strpos($email, '@') === false) {
-          setcookie('email_error_s', '1');
-          $errors = TRUE;
-        }
-    }
+// Валидация даты рождения
+if (!preg_match($datePattern, $date_of_birth)) {
+    $errors['date_of_birth'] = "Введите дату рождения в формате YYYY-MM-DD.";
+}
 
-    if (empty($_POST['Birth_date'])) {
-        setcookie('birth_date_error', '1');
-        $errors = TRUE;
-    }
+// Валидация пола
+if (empty($gender)) {
+    $errors['gender'] = "Выберите пол.";
+}
 
-    if (empty($_POST['Gender'])) {
-        setcookie('gender_error', '1');
-        $errors = TRUE;
-    }
+// Валидация биографии
+if (!preg_match($bioPattern, $bio)) {
+    $errors['bio'] = "Биография может содержать только буквы, цифры и некоторые знаки.";
+}
 
-    if (empty($_POST['Favlangs'])) {
-        setcookie('favlangs_error', '1');
-        $errors = TRUE;
-    }
+// Валидация множественного выбора
+if (empty($options)) {
+    $errors['options'] = "Выберите хотя бы одну опцию.";
+}
 
-    if (empty($_POST['Bio'])) {
-        setcookie('bio_error', '1');
-        $errors = TRUE;
-    } 
-    $v = time() + 365 * 24 * 60 * 60;
-    setcookie('fio_value', $_POST['Fio'], $v);
-    setcookie('tel_value', $_POST['Tel'], $v);
-    setcookie('familiar_value', $_POST['Familiar'], $v);
-    setcookie('email_value', $_POST['Email'], $v);
-    setcookie('birth_date_value', $_POST['Birth_date'], $v);
-    setcookie('gender_value', $_POST['Gender'], $v);
-    $favlangs = $_POST["Favlangs"];
-    $result = '';
-    foreach($favlangs as $item){
-        $result .= $item.' ';
-    }
-    setcookie('favlangs_value', $result, $v);
-    setcookie('bio_value', $_POST['Bio'], $v);
-    
-  
+// Валидация чекбоксов
+if (empty($checkboxes)) {
+    $errors['checkbox'] = "Выберите хотя бы один чекбокс.";
+}
 
-    if ($errors) {
-      header('Location: input.php');
-      exit();
+// Если есть ошибки, сохраняем их в Cookies и перенаправляем обратно
+if (!empty($errors)) {
+    foreach ($errors as $field => $error) {
+        setcookie("{$field}_error", $error, 0, "/");
     }
-    else {
-      setcookie('fio_error', '', 100000);
-      setcookie('fio_error_f', '', 100000);
-      setcookie('tel_error', '', 100000);
-      setcookie('tel_error_f', '', 100000);
-      setcookie('tel_error_n', '', 100000);
-      setcookie('familiar_error', '', 100000);
-      setcookie('email_error', '', 100000);
-      setcookie('email_error_f', '', 100000);
-      setcookie('birth_date_error', '', 100000);
-      setcookie('gender_error', '', 100000);
-      setcookie('favlangs_error', '', 100000);
-      setcookie('bio_error', '', 100000);
-      
-    }
-  
-    $fio = trim($_POST["Fio"]);
-    $tel = trim($_POST["Tel"]);
-    if(!isset($_POST["Familiar"])) die("Ознакомьтесь с контрактом");
-    $email = trim($_POST["Email"]);
-    $birth_date = trim($_POST["Birth_date"]);
-    $gender = trim($_POST["Gender"]);
-    $favlangs = $_POST["Favlangs"];
-    $bio = trim($_POST["Bio"]);
+    setcookie("name", $name, 0, "/");
+    setcookie("email", $email, 0, "/");
+    setcookie("phone", $phone, 0, "/");
+    setcookie("date_of_birth", $date_of_birth, 0, "/");
+    setcookie("gender", $gender, 0, "/");
+    setcookie("bio", $bio, 0, "/");
+    setcookie('options', serialize($options), 0, "/");
+    setcookie('checkboxes', serialize($checkboxes), 0, "/");
 
+    // Перенаправляем обратно на форму
+    header("Location: form.php");
+    exit();
+}
 
-    $conn = new mysqli("localhost", "u68676", "8999741", "u68676");
-    if($conn->connect_error){
-        die("Ошибка: " . $conn->connect_error);
-    }
-    $stmt = $conn->prepare("INSERT INTO forms (fio, tel, email, gender, birth_date, bio) VALUES (?, ?, ?, ?, ?, ?)");
-    if (!$stmt) {
-        die("Ошибка подготовки запроса: " . $conn->error);
-    }
+// Если ошибок нет, сохраняем данные в Cookies на год
+setcookie("name", $name, time() + (365 * 24 * 60 * 60), "/");
+setcookie("email", $email, time() + (365 * 24 * 60 * 60), "/");
+setcookie("phone", $phone, time() + (365 * 24 * 60 * 60), "/");
+setcookie("date_of_birth", $date_of_birth, time() + (365 * 24 * 60 * 60), "/");
+setcookie("gender", $gender, time() + (365 * 24 * 60 * 60), "/");
+setcookie("bio", $bio, time() + (365 * 24 * 60 * 60), "/");
+setcookie('options', serialize($options), time() + (365 * 24 * 60 * 60), "/");
+setcookie('checkboxes', serialize($checkboxes), time() + (365 * 24 * 60 * 60), "/");
 
-    $stmt->bind_param("ssssss", $fio, $tel, $email, $gender, $birth_date, $bio);
-    if ($stmt->execute()) {
-        $last_id = $conn->insert_id;
-        foreach($favlangs as $item) {
-            $stmt = $conn->prepare("INSERT INTO favlangs (id, id_lang) VALUES (?, ?)");
-            if (!$stmt) {
-                die("Ошибка подготовки запроса: " . $conn->error);
-            }
-            $stmt->bind_param("ii", $last_id, $item);
-            if (!$stmt->execute()) {
-                die("Ошибка при добавлении данных: " . $stmt->error);
-            }
-        }
-
-    } else {
-        die("Ошибка при добавлении данных: " . $stmt->error);
-    }
-  
-    setcookie('save', '1');
-  
-    header('Location: input.php');
-  }
+// Успешная обработка
+echo "Форма успешно отправлена!";
 ?>
-
