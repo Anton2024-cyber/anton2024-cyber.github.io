@@ -76,7 +76,7 @@ if (!empty($errors)) {
     setcookie('agreement', $agreement ? '1' : '0', 0, "/");
 
     // Перенаправляем обратно на форму
-    header("Location: index.php");
+    header("Location: index.html");
     exit();
 }
 
