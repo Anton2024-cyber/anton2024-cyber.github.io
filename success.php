@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['username']) || !isset($_SESSION['password'])) {
+    header('Location: index.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,6 +13,9 @@ session_start();
     <title>Успех</title>
 </head>
 <body>
-    <h1>Форма успешно отправлена!</h1>
+    <h1>Вы успешно зарегистрированы!</h1>
+    <p>Ваш логин: <?php echo $_SESSION['username']; ?></p>
+    <p>Ваш пароль: <?php echo $_SESSION['password']; ?></p>
+    <a href="login.php">Войти</a>
 </body>
 </html>
