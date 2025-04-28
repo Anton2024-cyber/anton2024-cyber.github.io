@@ -1,41 +1,39 @@
 <?php
-session_start();
-require 'db.php';
-require 'jwt.php';
+require 'vendor/autoload.php';
+use \Firebase\JWT\JWT;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$host = 'localhost';
+$db = 'u68669';
+$user = 'u68669';
+$pass = '5943600';
+
+$conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+    // Получение пользователя из базы данных
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
         // Генерация JWT
-        $token = generateJWT($username);
-        $_SESSION['token'] = $token; // Сохраняем токен в сессии
-        header('Location: form.php');
-        exit();
+        $secretKey = '46484993hgfdh@jjnc#'; // Секретный ключ для подписи JWT
+        $issuedAt = time();
+        $expirationTime = $issuedAt + 3600; // 1 час
+        $payload = [
+            'iat' => $issuedAt,
+            'exp' => $expirationTime,
+            'username' => $username
+        ];
+
+        $jwt = JWT::encode($payload, $secretKey);
+        echo "Вы успешно вошли!<br>";
+        echo "Ваш JWT: $jwt<br>";
     } else {
-        $error = "Неверный логин или пароль";
+        echo "Неверный логин или пароль.";
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Вход</title>
-</head>
-<body>
-    <h1>Вход</h1>
-    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
-    <form method="POST">
-        <input type="text" name="username" placeholder="Логин" required>
-        <input type="password" name="password" placeholder="Пароль" required>
-        <button type="submit">Войти</button>
-    </form>
-</body>
-</html>
