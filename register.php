@@ -3,9 +3,9 @@ require 'vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
 $host = 'localhost';
-$db = 'your_database';
-$user = 'your_username';
-$pass = 'your_password';
+$db = 'u68669';
+$user = 'u68669';
+$pass = '5943600';
 
 $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
 
