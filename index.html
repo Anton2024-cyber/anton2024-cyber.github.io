@@ -48,16 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Form</title>
+    <title>Изменение данных</title>
 </head>
 <body>
-    <h1>Изменение данных</h1>
+    <h1>Измените свои данные</h1>
     <form method="POST">
         <label for="name">Имя:</label>
         <input type="text" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
         <br>
         
-        <label for="email">Email:</label>
+        <label for="email">Электронная почта:</label>
         <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
         <br>
         
@@ -84,17 +84,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <option value="javascript" <?php if (in_array('javascript', explode(',', $user['languages']))) echo 'selected'; ?>>JavaScript</option>
             <option value="python" <?php if (in_array('python', explode(',', $user['languages']))) echo 'selected'; ?>>Python</option>
             <option value="java" <?php if (in_array('java', explode(',', $user['languages']))) echo 'selected'; ?>>Java</option>
-            <option value="c" <?php if (in_array('c', explode(',', $user['languages']))) echo 'selected'; ?>>C</option>
-            <option value="c++" <?php if (in_array('c++', explode(',', $user['languages']))) echo 'selected'; ?>>C++</option>
-            <option value="hascel" <?php if (in_array('hascel', explode(',', $user['languages']))) echo 'selected'; ?>>Hascel</option>
-            <option value="clojure" <?php if (in_array('clojure', explode(',', $user['languages']))) echo 'selected'; ?>>Clojure</option>
-            <option value="prolog" <?php if (in_array('prolog', explode(',', $user['languages']))) echo 'selected'; ?>>Prolog</option>
-            <option value="scala" <?php if (in_array('scala', explode(',', $user['languages']))) echo 'selected'; ?>>Scala</option>
+            <option value="csharp" <?php if (in_array('csharp', explode(',', $user['languages']))) echo 'selected'; ?>>C#</option>
         </select>
         <br>
+        
         <label>
             <input type="checkbox" name="data_consent" value="1" <?php if ($user['data_consent']) echo 'checked'; ?>> Согласие на обработку данных
-        </label>
+               </label>
         <br>
         
         <button type="submit">Обновить данные</button>
