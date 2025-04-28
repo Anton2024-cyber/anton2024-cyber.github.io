@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <h1>Форма</h1>
-    <form method="POST" action="setting.php">
+    <form method="POST">
         <label for="name"><p>Имя:</p></label>
         <input type="text" id="name" name="name" value="<?php if ($values['name']===''){print '';}else {print $values['name'];}?>" class="<?php echo isset($_COOKIE['name_error']) ? 'invalid' : ''; ?>">
         <span class="error"><?php echo $_COOKIE['name_error'] ?? ''; ?></span>
