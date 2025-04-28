@@ -48,10 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Изменение данных</title>
+    <title>Форма</title>
 </head>
 <body>
-    <h1>Измените свои данные</h1>
+    <h1>Изменение данных</h1>
     <form method="POST">
         <label for="name">Имя:</label>
         <input type="text" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
