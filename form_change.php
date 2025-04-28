@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Изменение данных</title>
 </head>
 <body>
-    <h1>Измените свои данные</h1>
+    <h1>Изменение данных</h1>
     <form method="POST">
         <label for="name">Имя:</label>
         <input type="text" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
@@ -79,11 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <label for="languages">Любимый язык программирования:</label>
         <select name="languages[]" multiple required>
-            <option value="php" <?php if (in_array('php', explode(',', $user['languages']))) echo 'selected'; ?>>PHP</option>
+            <option value="c++" <?php if (in_array('php', explode(',', $user['languages']))) echo 'selected'; ?>>C++</option>
+            <option value="c" <?php if (in_array('c', explode(',', $user['languages']))) echo 'selected'; ?>>C</option>
             <option value="javascript" <?php if (in_array('javascript', explode(',', $user['languages']))) echo 'selected'; ?>>JavaScript</option>
+            <option value="php" <?php if (in_array('php', explode(',', $user['languages']))) echo 'selected'; ?>>PHP</option>
             <option value="python" <?php if (in_array('python', explode(',', $user['languages']))) echo 'selected'; ?>>Python</option>
             <option value="java" <?php if (in_array('java', explode(',', $user['languages']))) echo 'selected'; ?>>Java</option>
-            <option value="csharp" <?php if (in_array('csharp', explode(',', $user['languages']))) echo 'selected'; ?>>C#</option>
+            <option value="haskel" <?php if (in_array('haskel', explode(',', $user['languages']))) echo 'selected'; ?>>Haskel</option>
+            <option value="clojure" <?php if (in_array('clojure', explode(',', $user['languages']))) echo 'selected'; ?>>Clojure</option>
+            <option value="prolog" <?php if (in_array('prolog', explode(',', $user['languages']))) echo 'selected'; ?>>Prolog</option>
+            <option value="scala" <?php if (in_array('scala', explode(',', $user['languages']))) echo 'selected'; ?>>Scala</option>
         </select>
         <br>
         
