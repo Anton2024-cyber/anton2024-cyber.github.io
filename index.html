@@ -1,100 +1,48 @@
-<?php
-session_start();
-require 'db.php';
-require 'jwt.php';
-
-// Проверка, авторизован ли пользователь
-if (!isset($_SESSION['token'])) {
-    header('Location: login.php');
-    exit();
-}
-
-// Валидация JWT
-$decoded = validateJWT($_SESSION['token']);
-if (!$decoded) {
-    header('Location: login.php');
-    exit();
-}
-
-// Получение текущих данных пользователя
-$stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-$stmt->execute([$decoded->username]);
-$user = $stmt->fetch();
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Обработка изменения данных
-    $newName = $_POST['name'];
-    $newEmail = $_POST['email'];
-    $newPhone = $_POST['phone'];
-    $newBirthdate = $_POST['birthdate'];
-    $newGender = $_POST['gender'];
-    $newBio = $_POST['bio'];
-    $newLanguages = isset($_POST['languages']) ? implode(',', $_POST['languages']) : '';
-    $dataConsent = isset($_POST['data_consent']) ? 1 : 0;
-
-    // Обновление данных в базе данных
-    $stmt = $pdo->prepare("UPDATE users SET name = ?, email = ?, phone = ?, birthdate = ?, gender = ?, bio = ?, languages = ?, data_consent = ? WHERE username = ?");
-    $stmt->execute([$newName, $newEmail, $newPhone, $newBirthdate, $newGender, $newBio, $newLanguages, $dataConsent, $decoded->username]);
-
-    // Обновляем токен с новым логином
-    $newToken = generateJWT($newEmail); // Можно использовать email для токена
-    $_SESSION['token'] = $newToken;
-
-    echo "<p>Данные успешно обновлены!</p>";
-}
-?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Изменение данных</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
 </head>
 <body>
-    <h1>Измените свои данные</h1>
-    <form method="POST">
+    <form action="register.php" method="POST">
         <label for="name">Имя:</label>
-        <input type="text" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" required>
-        <br>
-        
-        <label for="email">Электронная почта:</label>
-        <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-        <br>
-        
+        <input type="text" name="name" required><br>
+
         <label for="phone">Номер телефона:</label>
-        <input type="text" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" required>
-        <br>
-        
-        <label for="birthdate">Дата рождения:</label>
-        <input type="date" name="birthdate" value="<?php echo htmlspecialchars($user['birthdate']); ?>" required>
-        <br>
-        
+        <input type="text" name="phone" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+
         <label>Пол:</label>
-        <input type="radio" name="gender" value="male" <?php if ($user['gender'] == 'male') echo 'checked'; ?>> Мужской
-        <input type="radio" name="gender" value="female" <?php if ($user['gender'] == 'female') echo 'checked'; ?>> Женский
-        <br>
-        
-        <label for="bio">Биография:</label>
-        <textarea name="bio" required><?php echo htmlspecialchars($user['bio']); ?></textarea>
-        <br>
-        
-        <label for="languages">Любимый язык программирования:</label>
-        <select name="languages[]" multiple required>
-            <option value="php" <?php if (in_array('php', explode(',', $user['languages']))) echo 'selected'; ?>>PHP</option>
-            <option value="javascript" <?php if (in_array('javascript', explode(',', $user['languages']))) echo 'selected'; ?>>JavaScript</option>
-            <option value="python" <?php if (in_array('python', explode(',', $user['languages']))) echo 'selected'; ?>>Python</option>
-            <option value="java" <?php if (in_array('java', explode(',', $user['languages']))) echo 'selected'; ?>>Java</option>
-            <option value="csharp" <?php if (in_array('csharp', explode(',', $user['languages']))) echo 'selected'; ?>>C#</option>
-        </select>
-        <br>
-        
+        <input type="radio" name="gender" value="male" required> Мужской
+        <input type="radio" name="gender" value="female"> Женский<br>
+
+        <label for="birthdate">Дата рождения:</label>
+        <input type="date" name="birthdate" required><br>
+
+        <label for="biography">Биография:</label>
+        <textarea name="biography" required></textarea><br>
+
+        <label for="programming_languages">Любимый язык программирования:</label>
+        <select name="programming_languages[]" multiple required>
+            <option value="c">C</option>
+            <option value="c++">C++</option>
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="haskell">Haskell</option>
+            <option value="clojure">Clojure</option>
+            <option value="prolog">Prolog</option>
+        </select><br>
+
         <label>
-            <input type="checkbox" name="data_consent" value="1" <?php if ($user['data_consent']) echo 'checked'; ?>> Согласие на обработку данных
-               </label>
-        <br>
-        
-        <button type="submit">Обновить данные</button>
+            <input type="checkbox" name="consent" required> С договором согласен(-а)
+        </label><br>
+
+        <button type="submit">Отправить</button>
     </form>
-    <a href="logout.php">Выйти</a>
 </body>
 </html>
