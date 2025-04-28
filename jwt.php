@@ -2,13 +2,13 @@
 require 'vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
-$secretKey = 'your_secret_key'; // Замените на свой секретный ключ
+$secretKey = 's3cr3tK3y!@#1234567890'; 
 
 function generateJWT($username) {
     global $secretKey;
     $payload = [
         'iat' => time(),
-        'exp' => time() + (60 * 60), // Токен будет действителен 1 час
+        'exp' => time() + (60 * 60), 
         'username' => $username
     ];
     return JWT::encode($payload, $secretKey);
