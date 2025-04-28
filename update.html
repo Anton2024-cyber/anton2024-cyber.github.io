@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменение данных</title>
+</head>
+<body>
+    <form action="update.php" method="POST">
+        <label for="jwt">Введите ваш JWT:</label>
+        <input type="text" name="jwt" required><br>
+
+        <label for="name">Имя:</label>
+        <input type="text" name="name"><br>
+
+        <label for="phone">Номер телефона:</label>
+        <input type="text" name="phone"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email"><br>
+
+        <label>Пол:</label>
+        <input type="radio" name="gender" value="male"> Мужской
+        <input type="radio" name="gender" value="female"> Женский
+        <input type="radio" name="gender" value="other"> Другой<br>
+
+        <label for="birthdate">
+        <input type="date" name="birthdate"><br>
+
+        <button type="submit">Обновить данные</button>
+    </form>
+</body>
+</html>
