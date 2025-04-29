@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
+    <title>Форма регистрации</title>
 </head>
 <body>
+    <h1>Регистрация</h1>
     <form action="register.php" method="POST">
         <label for="name">Имя:</label>
-        <input type="text" name="name" required><br>
+        <input type="text" id="name" name="name" required><br>
 
         <label for="phone">Номер телефона:</label>
-        <input type="text" name="phone" required><br>
+        <input type="text" id="phone" name="phone" required><br>
 
         <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
+        <input type="email" id="email" name="email" required><br>
 
         <label>Пол:</label>
-        <input type="radio" name="gender" value="male" required> Мужской
-        <input type="radio" name="gender" value="female"> Женский<br>
+        <input type="radio" name="gender" value="male" required> Мужчина
+        <input type="radio" name="gender" value="female" required> Женщина<br>
 
         <label for="birthdate">Дата рождения:</label>
-        <input type="date" name="birthdate" required><br>
+        <input type="date" id="birthdate" name="birthdate" required><br>
 
         <label for="biography">Биография:</label>
-        <textarea name="biography" required></textarea><br>
+        <textarea id="biography" name="biography"></textarea><br>
 
         <label for="programming_languages">Любимый язык программирования:</label>
-        <select name="programming_languages[]" multiple required>
+        <select id="programming_languages" name="programming_languages[]" multiple>
             <option value="c">C</option>
             <option value="c++">C++</option>
             <option value="javascript">JavaScript</option>
