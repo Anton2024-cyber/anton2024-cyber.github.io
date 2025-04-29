@@ -1,14 +1,14 @@
 <?php
-require 'vendor/autoload.php';
-use \Firebase\JWT\JWT;
-
+// Подключение к базе данных
 $host = 'localhost';
-$db = 'u68669';
-$user = 'u68669';
-$pass = '5943600';
+$db = 'my_database';
+$user = 'root'; // замените на ваше имя пользователя
+$pass = ''; // замените на ваш пароль
 
-$conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+$pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+// Обработка данных формы
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $phone = $_POST['phone'];
@@ -19,29 +19,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $programming_languages = implode(',', $_POST['programming_languages']);
     $consent = isset($_POST['consent']) ? 1 : 0;
 
-    $username = uniqid('user_'); // Генерация уникального логина
+    // Генерация логина и пароля
+    $username = strtolower(substr($name, 0, 3) . rand(100, 999));
     $password = bin2hex(random_bytes(4)); // Генерация случайного пароля
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare("INSERT INTO users (name, phone, email, gender, birthdate, biography, programming_languages, password_hash, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
+    try {
+        // Выполнение запроса
+        $stmt->execute([$name, $phone, $email, $gender, $birthdate, $biography, $programming_languages, $password_hash, $username]);
 
-    // Сохранение пользователя в базе данных
-    $stmt = $conn->prepare("INSERT INTO users (username, password, name, phone, email, gender, birthdate, biography, programming_languages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$username, $hashedPassword, $name, $phone, $email, $gender, $birthdate, $biography, $programming_languages]);
-$secretKey = 'jnhicsisubfb@ijngoi#fk'; // Секретный ключ для подписи JWT
-    $issuedAt = time();
-    $expirationTime = $issuedAt + 3600; // Время жизни токена (1 час)
-
-    $payload = [
-        'iat' => $issuedAt,
-        'exp' => $expirationTime,
-        'username' => $username
-    ];
-
-    $jwt = JWT::encode($payload, $secretKey);
-
-    // Вывод информации пользователю
-    echo "Регистрация прошла успешно!<br>";
-    echo "Логин: $username<br>";
-    echo "Пароль: $password<br>";
-    echo "Ваш JWT: $jwt<br>";
+        // Успешная регистрация
+        echo "Регистрация прошла успешно!<br>";
+        echo "Ваш логин: $username<br>";
+        echo "Ваш пароль: $password<br>";
+    } catch (PDOException $e) {
+        echo "Ошибка: " . $e->getMessage();
+    }
 }
 ?>
