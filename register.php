@@ -23,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Сохранение пользователя в базе данных
-    $stmt = $conn->prepare("INSERT INTO users (username, password, name, phone, email, gender, birthdate, biography, programming_languages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO user (username, password, name, phone, email, gender, birthdate, biography, programming_languages) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$username, $hashedPassword, $name, $phone, $email, $gender, $birthdate, $biography, $programming_languages]);
-$secretKey = 'your_secret_key'; // Секретный ключ для подписи JWT
+$secretKey = 'jnhicsisubfb@ijngoi#fk'; // Секретный ключ для подписи JWT
     $issuedAt = time();
     $expirationTime = $issuedAt + 3600; // Время жизни токена (1 час)
 
