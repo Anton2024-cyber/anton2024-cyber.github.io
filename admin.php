@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Получение данных пользователей
-$stmt = $pdo->query("SELECT * FROM users");
+$stmt = $pdo->query("SELECT * FROM applications");
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Подсчет статистики по языкам программирования
