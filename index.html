@@ -25,13 +25,13 @@
       <li><strong><?= htmlspecialchars($lang) ?></strong>: <?= intval($count) ?></li>
     <?php endforeach; ?>
   </ul>
-  <p><strong>Всего пользователей:</strong> <?= count($users) ?></p>
+  <p><strong>Всего заявок:</strong> <?= count($users) ?></p>
 </section>
 
 <section>
-  <h2>Пользователи</h2>
+  <h2>Заявки</h2>
   <?php if (empty($users)): ?>
-    <p>Пользователи не найдены.</p>
+    <p>Заявки не найдены.</p>
   <?php else: ?>
     <table border="1" cellpadding="4" cellspacing="0">
       <thead>
@@ -111,7 +111,7 @@
                 </div>
               </form>
             </details>
-            <form method="post" action="admin.php" onsubmit="return confirm('Удалить пользователя #<?= htmlspecialchars($id) ?>?');" style="margin-top: 5px;">
+            <form method="post" action="admin.php" onsubmit="return confirm('Удалить заявку #<?= htmlspecialchars($id) ?>?');" style="margin-top: 5px;">
               <input type="hidden" name="user_id" value="<?= htmlspecialchars($id) ?>">
               <input type="hidden" name="delete" value="1">
               <button type="submit">Удалить</button>
