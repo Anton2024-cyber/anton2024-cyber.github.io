@@ -25,7 +25,7 @@ $messages = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete']) && isset($_POST['user_id'])) {
         $id = intval($_POST['user_id']);
-        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM applications WHERE id = ?");
         if ($stmt->execute([$id])) {
             $messages[] = "Пользователь #$id удален успешно.";
         } else {
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $languages = json_encode($_POST['languages'] ?? []);
         $agreement = isset($_POST['agreement']) ? 1 : 0;
 
-        $stmt = $pdo->prepare("UPDATE users SET name = ?, phone = ?, email = ?, birthday = ?, gender = ?, bio = ?, languages = ?, agreement = ? WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE applications SET name = ?, phone = ?, email = ?, birthday = ?, gender = ?, bio = ?, languages = ?, agreement = ? WHERE id = ?");
         if ($stmt->execute([$name, $phone, $email, $birthday, $gender, $bio, $languages, $agreement, $id])) {
             $messages[] = "Пользователь #$id обновлен успешно.";
         } else {
