@@ -1,317 +1,72 @@
 <?php
-// HTTP Basic Authentication
-$valid_users = ['admin' => 'password123']; // Change password as needed
+// Подключение к базе данных
+$host = 'localhost'; // или ваш хост
+$db = 'u68669';
+$user = 'u68669'; // ваш пользователь
+$pass = '5943600'; // ваш пароль
 
-if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])
-    || !array_key_exists($_SERVER['PHP_AUTH_USER'], $valid_users)
-    || $valid_users[$_SERVER['PHP_AUTH_USER']] !== $_SERVER['PHP_AUTH_PW']) {
+$pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// HTTP Basic Authentication
+$valid_users = ['admin' => 'password123']; // Измените на свои учетные данные
+
+if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW']) ||
+    !array_key_exists($_SERVER['PHP_AUTH_USER'], $valid_users) ||
+    $valid_users[$_SERVER['PHP_AUTH_USER']] !== $_SERVER['PHP_AUTH_PW']) {
     header('WWW-Authenticate: Basic realm="Admin Area"');
     header('HTTP/1.0 401 Unauthorized');
     echo 'Authentication required.';
     exit;
 }
 
-// File to store user data
-$data_file = 'users.json';
+// Обработка запросов на редактирование и удаление
+$messages = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['delete']) && isset($_POST['user_id'])) {
+        $id = intval($_POST['user_id']);
+        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        if ($stmt->execute([$id])) {
+            $messages[] = "Пользователь #$id удален успешно.";
+        } else {
+            $messages[] = "Ошибка при удалении пользователя.";
+        }
+    } elseif (isset($_POST['edit']) && isset($_POST['user_id'])) {
+        $id = intval($_POST['user_id']);
+        $name = trim($_POST['name']);
+        $phone = trim($_POST['phone']);
+        $email = trim($_POST['email']);
+        $birthday = $_POST['birthday'];
+        $gender = $_POST['gender'];
+        $bio = trim($_POST['bio']);
+        $languages = json_encode($_POST['languages'] ?? []);
+        $agreement = isset($_POST['agreement']) ? 1 : 0;
 
-// Load users data
-$users = [];
-if (file_exists($data_file)) {
-    $json_data = file_get_contents($data_file);
-    $users = json_decode($json_data, true) ?: [];
-}
-
-// List of languages
-$languages_list = ['C', 'C++', 'JavaScript', 'Python', 'Java', 'Haskel', 'Clojure', 'Prolog'];
-
-// Helper function to save users data
-function save_users($users, $data_file) {
-    file_put_contents($data_file, json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-}
-
-// Handle delete
-if (isset($_GET['delete'])) {
-    $delete_index = intval($_GET['delete']);
-    if (isset($users[$delete_index])) {
-        array_splice($users, $delete_index, 1);
-        save_users($users, $data_file);
-        header('Location: admin.php');
-        exit;
-    }
-}
-
-// Handle edit save
-if (isset($_POST['save_edit'])) {
-    $index = intval($_POST['user_index']);
-    if (isset($users[$index])) {
-        $users[$index]['name'] = $_POST['name'] ?? '';
-        $users[$index]['phone'] = $_POST['phone'] ?? '';
-        $users[$index]['email'] = $_POST['email'] ?? '';
-        $users[$index]['birthdate'] = $_POST['birthdate'] ?? '';
-        $users[$index]['gender'] = $_POST['gender'] ?? '';
-        $users[$index]['bio'] = $_POST['bio'] ?? '';
-        $users[$index]['languages'] = isset($_POST['languages']) ? array_values($_POST['languages']) : [];
-        $users[$index]['agreement'] = isset($_POST['agreement']) && $_POST['agreement'] === 'on';
-        save_users($users, $data_file);
-        header('Location: admin.php');
-        exit;
-    }
-}
-
-// If editing a user, get the data
-$editing_index = null;
-$editing_user = null;
-if (isset($_GET['edit'])) {
-    $editing_index = intval($_GET['edit']);
-    if (isset($users[$editing_index])) {
-        $editing_user = $users[$editing_index];
-    } else {
-        $editing_index = null;
-    }
-}
-
-// Function to count users liking each language
-function count_languages($users, $languages_list) {
-    $counts = array_fill_keys($languages_list, 0);
-    foreach ($users as $user) {
-        if (!empty($user['languages'])) {
-            foreach ($user['languages'] as $lang) {
-                if (isset($counts[$lang])) {
-                    $counts[$lang]++;
-                }
-            }
+        $stmt = $pdo->prepare("UPDATE users SET name = ?, phone = ?, email = ?, birthday = ?, gender = ?, bio = ?, languages = ?, agreement = ? WHERE id = ?");
+        if ($stmt->execute([$name, $phone, $email, $birthday, $gender, $bio, $languages, $agreement, $id])) {
+            $messages[] = "Пользователь #$id обновлен успешно.";
+        } else {
+            $messages[] = "Ошибка при обновлении пользователя.";
         }
     }
-    return $counts;
 }
 
-$lang_counts = count_languages($users, $languages_list);
+// Получение данных пользователей
+$stmt = $pdo->query("SELECT * FROM users");
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Подсчет статистики по языкам программирования
+$langs = ['C', 'C++', 'JavaScript', 'Python', 'Java', 'Haskell', 'Clojure', 'Prolog'];
+$lang_stats = array_fill_keys($langs, 0);
+foreach ($users as $user) {
+    $user_languages = json_decode($user['languages'], true);
+    foreach ($user_languages as $lang) {
+        if (in_array($lang, $langs)) {
+            $lang_stats[$lang]++;
+        }
+    }
+}
+
+// Включение HTML-шаблона
+include 'admin_view.html';
 ?>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Page - User Management</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            color: #222;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 25px;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px 15px;
-            border: 1px solid #e1e1e1;
-            text-align: left;
-        }
-        th {
-            background-color: #0078d7;
-            color: white;
-        }
-        a.button {
-            display: inline-block;
-            padding: 8px 12px;
-            margin: 2px;
-            color: white;
-            background-color: #0078d7;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        a.button.delete {
-            background-color: #d9534f;
-        }
-        form {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-            border-radius: 8px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 8px 10px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-family: inherit;
-            box-sizing: border-box;
-            resize: vertical;
-        }
-        textarea {
-            height: 80px;
-        }
-        .radio-group {
-            margin-bottom: 12px;
-        }
-        .radio-group label {
-            font-weight: normal;
-            display: inline-block;
-            margin-right: 15px;
-        }
-        .checkbox-group {
-            margin-bottom: 12px;
-        }
-        button {
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            font-size: 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        button:hover {
-            background-color: #005f9e;
-        }
-        .stats {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        @media (max-width: 600px) {
-            table, form, .stats {
-                font-size: 14px;
-            }
-            th, td {
-                padding: 8px 10px;
-            }
-            button, a.button {
-                padding: 8px 10px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <h1>Администратор: управление пользователями</h1>
-
-    <?php if ($editing_user !== null): ?>
-    <form method="POST" action="admin.php">
-        <h2>Редактирование пользователя</h2>
-        <input type="hidden" name="user_index" value="<?= $editing_index ?>">
-
-        <label for="name">Имя:</label>
-        <input type="text" id="name" name="name" required value="<?= htmlspecialchars($editing_user['name']) ?>">
-
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" name="phone" required value="<?= htmlspecialchars($editing_user['phone']) ?>" pattern="\+?[0-9\s\-\(\)]{5,}" title="Введите корректный номер телефона">
-
-        <label for="email">Электронная почта:</label>
-        <input type="email" id="email" name="email" required value="<?= htmlspecialchars($editing_user['email']) ?>">
-
-        <label for="birthdate">Дата рождения:</label>
-        <input type="date" id="birthdate" name="birthdate" value="<?= htmlspecialchars($editing_user['birthdate']) ?>">
-
-        <div class="radio-group">
-            <label>Пол:</label>
-            <label><input type="radio" name="gender" value="Мужской" <?= ($editing_user['gender'] === 'Мужской') ? 'checked' : '' ?>> Мужской</label>
-            <label><input type="radio" name="gender" value="Женский" <?= ($editing_user['gender'] === 'Женский') ? 'checked' : '' ?>> Женский</label>
-        </div>
-
-        <label for="bio">Биография:</label>
-        <textarea id="bio" name="bio"><?= htmlspecialchars($editing_user['bio']) ?></textarea>
-
-        <label for="languages">Любимые языки программирования (множественный выбор):</label>
-        <select id="languages" name="languages[]" multiple size="5">
-            <?php foreach ($languages_list as $lang): ?>
-                <option value="<?= $lang ?>" <?= in_array($lang, $editing_user['languages']) ? 'selected' : '' ?>><?= $lang ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        <div class="checkbox-group">
-            <label>
-                <input type="checkbox" name="agreement" <?= ($editing_user['agreement']) ? 'checked' : '' ?>>
-                Согласие с договором
-            </label>
-        </div>
-
-        <button type="submit" name="save_edit">Сохранить</button>
-        <a href="admin.php" class="button" style="background:#777; margin-left:10px; text-decoration:none; padding:10px 18px; border-radius:5px;">Отмена</a>
-    </form>
-
-    <?php else: ?>
-
-    <h2>Пользователи</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Имя</th>
-                <th>Телефон</th>
-                <th>Email</th>
-                <th>Дата рождения</th>
-                <th>Пол</th>
-                <th>Биография</th>
-                <th>Любимые языки</th>
-                <th>Согласие</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if(count($users) === 0): ?>
-                <tr><td colspan="9" style="text-align:center;">Нет пользователей</td></tr>
-            <?php endif; ?>
-            <?php foreach ($users as $index => $user): ?>
-            <tr>
-                <td><?= htmlspecialchars($user['name']) ?></td>
-                <td><?= htmlspecialchars($user['phone']) ?></td>
-                <td><?= htmlspecialchars($user['email']) ?></td>
-                <td><?= htmlspecialchars($user['birthdate']) ?></td>
-                <td><?= htmlspecialchars($user['gender']) ?></td>
-                <td style="max-width: 180px; overflow-wrap: break-word;"><?= nl2br(htmlspecialchars($user['bio'])) ?></td>
-                <td><?= htmlspecialchars(implode(', ', $user['languages'])) ?></td>
-                <td><?= $user['agreement'] ? 'Да' : 'Нет' ?></td>
-                <td>
-                    <a href="admin.php?edit=<?= $index ?>" class="button">Редактировать</a>
-                    <a href="admin.php?delete=<?= $index ?>" class="button delete" onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?');">Удалить</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <div class="stats">
-        <h2>Статистика по любимым языкам программирования</h2>
-        <ul>
-            <?php foreach ($lang_counts as $lang => $count): ?>
-                <li><?= $lang ?> : <?= $count ?> <?= $count === 1 ? 'пользователь' : 'пользователей' ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-
-    <?php endif; ?>
-
-</body>
-</html>
-</content>
-</create_file>
