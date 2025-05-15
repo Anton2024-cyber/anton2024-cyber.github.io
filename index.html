@@ -25,12 +25,12 @@
       <li><strong><?= htmlspecialchars($lang) ?></strong>: <?= intval($count) ?></li>
     <?php endforeach; ?>
   </ul>
-  <p><strong>Всего заявок:</strong> <?= count($users) ?></p>
+  <p><strong>Всего заявок:</strong> <?= count($applications) ?></p>
 </section>
 
 <section>
   <h2>Заявки</h2>
-  <?php if (empty($users)): ?>
+  <?php if (empty($applications)): ?>
     <p>Заявки не найдены.</p>
   <?php else: ?>
     <table border="1" cellpadding="4" cellspacing="0">
@@ -49,7 +49,7 @@
         </tr>
       </thead>
       <tbody>
-      <?php foreach ($users as $user): 
+      <?php foreach ($applications as $user): 
         $id = $user['id'];
         $languages = json_decode($user['languages'], true) ?: [];
         ?>
