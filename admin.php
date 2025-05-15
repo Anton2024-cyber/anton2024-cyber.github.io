@@ -53,12 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Получение данных пользователей
 $stmt = $pdo->query("SELECT * FROM applications");
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Подсчет статистики по языкам программирования
 $langs = ['C', 'C++', 'JavaScript', 'Python', 'Java', 'Haskell', 'Clojure', 'Prolog'];
 $lang_stats = array_fill_keys($langs, 0);
-foreach ($users as $user) {
+foreach ($applications as $user) {
     $user_languages = json_decode($user['languages'], true);
     foreach ($user_languages as $lang) {
         if (in_array($lang, $langs)) {
