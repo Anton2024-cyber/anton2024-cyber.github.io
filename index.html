@@ -58,7 +58,7 @@
               <td><?= htmlspecialchars($user['phone']) ?></td>
               <td><?= htmlspecialchars($user['email']) ?></td>
               <td><?= htmlspecialchars($user['birthday']) ?></td>
-              <td><?= ($user['gender'] === 'male') ? 'Мужской' : (($user['gender'] === 'female') ? 'Женский' : '') ?></td>
+              <td><?= ($user['gender'] === 'male') ? 'Мужской' : 'Женский' ?></td>
               <td><?= nl2br(htmlspecialchars($user['bio'])) ?></td>
               <td><?= htmlspecialchars(implode(', ', $languages)) ?></td>
               <td><?= $user['agreement'] ? 'Да' : 'Нет' ?></td>
