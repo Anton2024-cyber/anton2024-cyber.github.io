@@ -1,34 +1,23 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-&nbsp;
-&nbsp;
 
 // Подключение к базе данных
 $servername = "localhost"; // или ваш сервер базы данных
 $username = "u68669"; // ваш пользователь базы данных
 $password = "5943600"; // ваш пароль базы данных
 $dbname = "u68669"; // имя вашей базы данных
-&nbsp;
-&nbsp;
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-&nbsp;
-&nbsp;
 
 // Проверка соединения
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-&nbsp;
-&nbsp;
 
 // Обработка POST-запроса
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-&nbsp;
-&nbsp;
-
     // Проверка авторизации
     if (isset($_SESSION['username'])) {
         // Обновление данных пользователя
@@ -47,8 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = password_hash($data['password'] ?? '', PASSWORD_DEFAULT); // Хеширование пароля
         $name = $data['name'] ?? '';
         $email = $data['email'] ?? '';
-&nbsp;
-&nbsp;
 
         if ($username && $password && $name && $email) {
             // Сохранение пользователя в базу данных
@@ -67,8 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['error' => 'Неверный метод запроса.']);
 }
-&nbsp;
-&nbsp;
 
 $conn->close(); // Закрытие соединения
 ?>
