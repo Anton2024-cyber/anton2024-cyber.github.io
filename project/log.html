@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Log</title>
+    <script>
+        // Проверка авторизации
+        if (!sessionStorage.getItem('loggedIn')) {
+            window.location.href = "index.html"; // Перенаправление на index.html
+        }
+    </script>
+</head>
+<body>
+    <h1>User Log Page</h1>
+    <p>Welcome to the user log page!</p>
+    <a href="logout.php">Logout</a>
+</body>
+</html>
