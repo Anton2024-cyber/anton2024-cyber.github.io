@@ -1,39 +1,42 @@
 <?php
-require 'vendor/autoload.php';
-use \Firebase\JWT\JWT;
+session_start();
+header('Content-Type: application/json');
 
-$host = 'localhost';
-$db = 'u68669';
-$user = 'u68669';
-$pass = '5943600';
+// Симуляция базы данных
+$users = [];
 
-$conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-
+// Обработка POST-запроса
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $data = json_decode(file_get_contents('php://input'), true);
 
-    // Получение пользователя из базы данных
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
-
-    if ($user && password_verify($password, $user['password'])) {
-        // Генерация JWT
-        $secretKey = 'your_secret_key'; // Секретный ключ для подписи JWT
-        $issuedAt = time();
-        $expirationTime = $issuedAt + 3600; // 1 час
-        $payload = [
-            'iat' => $issuedAt,
-            'exp' => $expirationTime,
-            'username' => $username
-        ];
-
-        $jwt = JWT::encode($payload, $secretKey);
-        echo "Вы успешно вошли!<br>";
-        echo "Ваш JWT: $jwt<br>";
+    // Проверка авторизации
+    if (isset($_SESSION['username'])) {
+        // Обновление данных пользователя
+        if (isset($data['name']) && isset($data['email'])) {
+            $username = $_SESSION['username'];
+            $users[$username]['name'] = $data['name'];
+            $users[$username]['email'] = $data['email'];
+            echo json_encode(['message' => 'Данные пользователя обновлены.']);
+        } else {
+            echo json_encode(['error' => 'Неверные данные.']);
+        }
     } else {
-        echo "Неверный логин или пароль.";
+        // Регистрация нового пользователя
+        $username = $data['username'] ?? '';
+        $password = $data['password'] ?? '';
+        $name = $data['name'] ?? '';
+        $email = $data['email'] ?? '';
+
+        if ($username && $password && $name && $email) {
+            // Сохранение пользователя в "базу данных"
+            $users[$username] = ['password' => $password, 'name' => $name, 'email' => $email];
+            $_SESSION['username'] = $username; // Авторизация пользователя
+            echo json_encode(['message' => 'Пользователь зарегистрирован.', 'profile' => "profile.php?user=$username"]);
+        } else {
+            echo json_encode(['error' => 'Все поля обязательны для заполнения.']);
+        }
     }
+} else {
+    echo json_encode(['error' => 'Неверный метод запроса.']);
 }
 ?>
