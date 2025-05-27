@@ -1,47 +1,62 @@
 <?php
+session_start();
+header('Content-Type: application/json');
+
 // Подключение к базе данных
-$host = 'localhost';
-$db = 'u68669';
-$user = 'u68669'; // замените на ваше имя пользователя
-$pass = '5943600'; // замените на ваш пароль
+$host = "localhost"; // или ваш сервер базы данных
+$username = "u68669"; // ваш пользователь базы данных
+$password = "5943600"; // ваш пароль базы данных
+$dbname = "u68669"; // имя вашей базы данных
 
-$pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$conn = new mysqli($host, $username, $password, $dbname);
 
-// Подключение библиотеки для работы с JWT
-function jwt_encode($payload, $secret) {
-    $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
-    $header = base64_encode($header);
-    $payload = base64_encode(json_encode($payload));
-    $signature = hash_hmac('sha256', "$header.$payload", $secret, true);
-    $signature = base64_encode($signature);
-    return "$header.$payload.$signature";
+// Проверка соединения
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Обработка данных формы
+// Обработка POST-запроса
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $data = json_decode(file_get_contents('php://input'), true);
 
-    // Получение пользователя из базы данных
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password_hash'])) {
-        // Генерация JWT
-        $secret = 'your_secret_key'; // Замените на ваш секретный ключ
-        $payload = [
-            'id' => $user['id'],
-            'username' => $user['username'],
-            'exp' => time() + 3600 // Время жизни токена (1 час)
-        ];
-        $jwt = jwt_encode($payload, $secret);
-
-        echo "Аутентификация прошла успешно!<br>";
-        echo "Ваш JWT: $jwt<br>";
+    // Проверка авторизации
+    if (isset($_SESSION['username'])) {
+        // Обновление данных пользователя
+        if (isset($data['name']) && isset($data['email'])) {
+            $username = $_SESSION['username'];
+            $stmt = $conn->prepare("UPDATE users SET name=?, email=? WHERE username=?");
+            $stmt->bind_param("ssi", $data['name'], $data['email'], $username);
+            $stmt->execute();
+            echo json_encode(['message' => 'Данные пользователя обновлены.']);
+        } else {
+            echo json_encode(['error' => 'Неверные данные.']);
+        }
     } else {
-        echo "Неверный логин или пароль.";
+        // Регистрация нового пользователя
+        $username = $data['username'] ?? '';
+        $password = password_hash($data['password'] ?? '', PASSWORD_DEFAULT); // Хеширование пароля
+        $name = $data['name'] ?? '';
+        $email = $data['email'] ?? '';
+
+        if ($username && $password && $name && $email) {
+            // Сохранение пользователя в базу данных
+            $stmt = $conn->prepare("INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $username, $password, $name, $email);
+            if ($stmt->execute()) {
+                $_SESSION['username'] = $username; // Авторизация пользователя
+                echo json_encode(['message' => 'Пользователь зарегистрирован.', 'profile' => "profile.php?user=$username"]);
+            } else {
+                echo json_encode(['error' => 'Ошибка регистрации: ' . $stmt->error]);
+            }
+        } else {
+            echo json_encode(['error' => 'Все поля обязательны для заполнения.']);
+        }
     }
+} else {
+    echo json_encode(['error' => 'Неверный метод запроса.']);
 }
+&nbsp;
+&nbsp;
+
+$conn->close(); // Закрытие соединения
 ?>
