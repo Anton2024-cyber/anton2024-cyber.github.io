@@ -64,7 +64,7 @@ $result = $conn->query("SELECT id, name, email, phone, biography FROM users");
         </tr>
         <?php endwhile; ?>
     </table>
-    <a href="logout.php">Logout</a>
+    <a href="index.html">Logout</a>
 </body>
 </html>
 
