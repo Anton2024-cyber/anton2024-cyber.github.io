@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма регистрации</title>
-    <script src="jiji.js" defer></script>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="jiji.js"></script>
 </head>
 <body>
     <form id="userForm">
-        <input type="text" name="name" placeholder="Имя" required>
-        <input type="tel" name="phone" placeholder="Номер телефона" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <textarea name="biography" placeholder="Биография" required></textarea>
-        <label><input type="checkbox" name="consent" required> Согласие на обработку данных</label>
-        <button type="submit">Отправить</button>
+        <input type="text" name="name" placeholder="Имя" required><br>
+        <input type="tel" name="phone" placeholder="Номер телефона" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <textarea name="biography" placeholder="Биография" required></textarea><br>
+        <label><input type="checkbox" name="consent" required> Согласие на обработку данных</label><br>
+        <button type="submit">Отправить</button><br>
     </form>
     <div id="response"></div>
 </body>
