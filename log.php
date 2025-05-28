@@ -2,61 +2,64 @@
 session_start();
 header('Content-Type: application/json');
 
-// Подключение к базе данных
-$servername = "localhost"; // или ваш сервер базы данных
-$username = "u68669"; // ваш пользователь базы данных
-$password = "5943600"; // ваш пароль базы данных
-$dbname = "u68669"; // имя вашей базы данных
+// Database connection
+$servername = "localhost"; // Your database server
+$username = "u68669"; // Your database username
+$password = "5943600"; // Your database password
+$dbname = "u68669"; // Your database name
 
 $conn = new mysqli($servername, $username, $password, $dbname);
+&nbsp;
+&nbsp;
 
-// Проверка соединения
+// Check connection
 if ($conn->connect_error) {
     die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
-// Обработка POST-запроса
+// Handle POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
-    // Проверка авторизации
+    // Check if user is authorized
     if (isset($_SESSION['username'])) {
-        // Обновление данных пользователя
+        // Update user data
         if (isset($data['name']) && isset($data['email']) && isset($data['phone']) && isset($data['biography'])) {
             $username = $_SESSION['username'];
             $stmt = $conn->prepare("UPDATE users SET name=?, email=?, phone=?, biography=? WHERE username=?");
             $stmt->bind_param("ssssi", $data['name'], $data['email'], $data['phone'], $data['biography'], $username);
             $stmt->execute();
-            echo json_encode(['message' => 'Данные пользователя обновлены.']);
+            echo json_encode(['message' => 'User  data updated.']);
         } else {
-            echo json_encode(['error' => 'Неверные данные.']);
+            echo json_encode(['error' => 'Invalid data.']);
         }
     } else {
-        // Регистрация нового пользователя
-        $username = uniqid(); // Генерация уникального логина
-        $password = password_hash(uniqid(), PASSWORD_DEFAULT); // Хеширование пароля
+        // Register new user
+        $username = uniqid(); // Generate a unique username
+        $password = password_hash(uniqid(), PASSWORD_DEFAULT); // Hash the password
         $name = $data['name'] ?? '';
         $email = $data['email'] ?? '';
         $phone = $data['phone'] ?? '';
         $biography = $data['biography'] ?? '';
 
         if ($name && $email && $phone && $biography) {
-            // Сохранение пользователя в базу данных
-            $stmt = $conn->prepare("INSERT INTO users (username, password, name, email, phone, biography) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $username, $password, $name, $email, $phone, $biography);
+            // Save user to the database
+            $stmt = $conn->prepare("INSERT INTO users (username, password, name, email, phone, biography, consent) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $consent = isset($data['consent']) ? 1 : 0; // Convert checkbox to 1 or 0
+            $stmt->bind_param("ssssssi", $username, $password, $name, $email, $phone, $biography, $consent);
             if ($stmt->execute()) {
-                $_SESSION['username'] = $username; // Авторизация пользователя
-                echo json_encode(['message' => 'Пользователь зарегистрирован.', 'username' => $username, 'password' => uniqid(), 'profile' => "log.html?user=$username"]);
+                $_SESSION['username'] = $username; // Authorize user
+                echo json_encode(['message' => 'User  registered.', 'username' => $username, 'password' => uniqid(), 'profile' => "log.html?user=$username"]);
             } else {
-                echo json_encode(['error' => 'Ошибка регистрации: ' . $stmt->error]);
+                echo json_encode(['error' => 'Registration error: ' . $stmt->error]);
             }
         } else {
-            echo json_encode(['error' => 'Все поля обязательны для заполнения.']);
+            echo json_encode(['error' => 'All fields are required.']);
         }
     }
 } else {
-    echo json_encode(['error' => 'Неверный метод запроса.']);
+    echo json_encode(['error' => 'Invalid request method.']);
 }
 
-$conn->close(); // Закрытие соединения
+$conn->close(); // Close connection
 ?>
