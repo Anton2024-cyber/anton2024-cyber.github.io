@@ -7,9 +7,9 @@ if (!isset($_SESSION['admin_username'])) {
 
 // Database connection
 $servername = "localhost"; // Your database server
-$db_username = "your_db_username"; // Your database username
-$db_password = "your_db_password"; // Your database password
-$dbname = "user_db"; // Your database name
+$db_username = "u68669"; // Your database username
+$db_password = "5943600"; // Your database password
+$dbname = "u68669"; // Your database name
 
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
