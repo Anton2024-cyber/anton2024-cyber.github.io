@@ -7,6 +7,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
+
     fetch('log.php', {
         method: 'POST',
         headers: {
