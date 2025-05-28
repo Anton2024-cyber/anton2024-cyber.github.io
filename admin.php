@@ -1,53 +1,73 @@
 <?php
 session_start();
-// Проверяем, авторизован ли пользователь
-if (!isset($_SESSION['admin'])) {
-    header('Location: login.php');
-    exit;
+if (!isset($_SESSION['username'])) {
+    header('Location: index.html'); // Перенаправление на страницу регистрации, если пользователь не авторизован
+    exit();
 }
-// Генерация токена CSRF
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-// Подключение к базе данных
-$host = 'localhost'; // или ваш хост
-$db = 'u68669';
-$user = 'u68669'; // ваш пользователь
-$pass = '5943600'; // ваш пароль
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Ошибка подключения: " . $e->getMessage());
+// Подключение к базе данных
+$servername = "localhost"; // или ваш сервер базы данных
+$db_username = "u68669"; // ваш пользователь базы данных
+$db_password = "5943600"; // ваш пароль базы данных
+$dbname = "u68669"; // имя вашей базы данных
+
+$conn = new mysqli($servername, $db_username, $db_password, $dbname);
+
+// Проверка соединения
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-// Обрабатываем форму редактирования заявки
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-        die("CSRF token validation failed.");
-    }
-    if (isset($_POST['edit'])) {
-        $user_id = $_POST['user_id'];
-        $name = $_POST['name'];
-        $phone = $_POST['phone'];
-        $email = $_POST['email'];
-        $birthday = $_POST['birthday'];
-        $gender = $_POST['gender'];
-        $bio = $_POST['bio'];
-        $languages = json_encode($_POST['languages'] ?? []);
-        $agreement = isset($_POST['agreement']) ? 1 : 0;
-        $stmt = $pdo->prepare("UPDATE applications SET name = ?, phone = ?, email = ?, birthday = ?, gender = ?, bio = ?, languages = ?, agreement = ? WHERE id = ?");
-        $stmt->execute([$name, $phone, $email, $birthday, $gender, $bio, $languages, $agreement, $user_id]);
-        $_SESSION['messages'][] = "Заявка обновлена.";
-    }
-    // Обрабатываем форму удаления заявки
-    if (isset($_POST['delete'])) {
-        $user_id = $_POST['user_id'];
-        // Удаляем заявку из базы данных
-        $stmt = $pdo->prepare("DELETE FROM applications WHERE id = ?");
-        $stmt->execute([$user_id]);
-        $_SESSION['messages'][] = "Заявка удалена.";
-    }
-// Включение HTML-шаблона
-include 'admin_view.html';
+
+// Удаление пользователя
+if (isset($_POST['delete_user'])) {
+    $username_to_delete = $_POST['username'];
+    $stmt = $conn->prepare("DELETE FROM users WHERE username=?");
+    $stmt->bind_param("s", $username_to_delete);
+    $stmt->execute();
+}
+
+// Получение всех пользователей
+$result = $conn->query("SELECT username, name, email, phone, biography FROM users");
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель администратора</title>
+</head>
+<body>
+    <h1>Панель администратора</h1>
+    <table border="1">
+        <tr>
+            <th>Логин</th>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Биография</th>
+            <th>Действия</th>
+        </tr>
+        <?php while ($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($row['username']); ?></td>
+            <td><?php echo htmlspecialchars($row['name']); ?></td>
+            <td><?php echo htmlspecialchars($row['email']); ?></td>
+            <td><?php echo htmlspecialchars($row['phone']); ?></td>
+            <td><?php echo htmlspecialchars($row['biography']); ?></td>
+            <td>
+                <form method="POST">
+                    <input type="hidden" name="username" value="<?php echo htmlspecialchars($row['username']); ?>">
+                    <button type="submit" name="delete_user">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+    </table>
+    <a href="logout.php">Logout</a>
+</body>
+</html>
+
+<?php
+$conn->close(); // Закрытие соединения
 ?>
