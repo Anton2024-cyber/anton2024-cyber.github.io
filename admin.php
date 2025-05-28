@@ -1,24 +1,24 @@
 <?php
 session_start();
 if (!isset($_SESSION['admin_username'])) {
-    header('Location: login.php'); // Redirect to admin login page
+    header('Location: login.php'); // Перенаправление на страницу входа для администраторов
     exit();
 }
 
-// Database connection
-$servername = "localhost"; // Your database server
-$db_username = "u68669"; // Your database username
-$db_password = "5943600"; // Your database password
-$dbname = "u68669"; // Your database name
+// Подключение к базе данных
+$servername = "localhost"; // Ваш сервер базы данных
+$db_username = "u68669"; // Ваш пользователь базы данных
+$db_password = "5943600"; // Ваш пароль базы данных
+$dbname = "u68669"; // Имя вашей базы данных
 
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
-// Check connection
+// Проверка соединения
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle user deletion
+// Удаление записи
 if (isset($_POST['delete'])) {
     $id_to_delete = $_POST['id'];
     $stmt = $conn->prepare("DELETE FROM users WHERE id=?");
@@ -26,7 +26,7 @@ if (isset($_POST['delete'])) {
     $stmt->execute();
 }
 
-// Fetch all users
+// Получение всех записей
 $result = $conn->query("SELECT id, name, email, phone, biography FROM users");
 
 ?>
@@ -35,18 +35,18 @@ $result = $conn->query("SELECT id, name, email, phone, biography FROM users");
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <title>Панель администратора</title>
 </head>
 <body>
-    <h1>Admin Panel</h1>
+    <h1>Панель администратора</h1>
     <table border="1">
         <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Имя</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Biography</th>
-            <th>Actions</th>
+            <th>Телефон</th>
+            <th>Биография</th>
+            <th>Действия</th>
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
@@ -58,11 +58,11 @@ $result = $conn->query("SELECT id, name, email, phone, biography FROM users");
             <td>
                 <form method="POST" action="edit.php" style="display:inline;">
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                    <button type="submit" name="edit">Edit</button>
+                    <button type="submit" name="edit">Редактировать</button>
                 </form>
                 <form method="POST" style="display:inline;">
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                    <button type="submit" name="delete">Delete</button>
+                    <button type="submit" name="delete">Удалить</button>
                 </form>
             </td>
         </tr>
@@ -73,5 +73,5 @@ $result = $conn->query("SELECT id, name, email, phone, biography FROM users");
 </html>
 
 <?php
-$conn->close(); // Close connection
+$conn->close(); // Закрытие соединения
 ?>
