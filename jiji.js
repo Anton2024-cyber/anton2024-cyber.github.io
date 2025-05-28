@@ -22,7 +22,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
             document.getElementById('response').innerText = data.error;
         } else {
             // Перенаправление на конкретный URL после успешной отправки
-            window.location.href = 'project.html'; // Указываем конкретный URL
+            window.location.href = project.html; // Указываем конкретный URL
         }
     })
     .catch(error => {
