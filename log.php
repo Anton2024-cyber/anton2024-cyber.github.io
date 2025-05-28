@@ -1,6 +1,7 @@
 <?php
 session_start();
 header('Content-Type: application/json');
+
 // Подключение к базе данных
 $servername = "localhost"; // Ваш сервер базы данных
 $username = "u68669"; // Ваш пользователь базы данных
