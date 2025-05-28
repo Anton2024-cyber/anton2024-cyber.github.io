@@ -41,7 +41,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(ev
         jsonData[key] = value;
     });
 
-    fetch('admin_login.php', {
+    fetch('admin_view.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
