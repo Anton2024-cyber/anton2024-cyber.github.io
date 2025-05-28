@@ -3,12 +3,12 @@ session_start();
 header('Content-Type: application/json');
 
 // Подключение к базе данных
-$host = "localhost"; // или ваш сервер базы данных
+$servername = "localhost"; // или ваш сервер базы данных
 $username = "u68669"; // ваш пользователь базы данных
 $password = "5943600"; // ваш пароль базы данных
 $dbname = "u68669"; // имя вашей базы данных
 
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Проверка соединения
 if ($conn->connect_error) {
@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Проверка авторизации
     if (isset($_SESSION['username'])) {
         // Обновление данных пользователя
-        if (isset($data['name']) && isset($data['email'])) {
+        if (isset($data['name']) && isset($data['email']) && isset($data['phone']) && isset($data['biography'])) {
             $username = $_SESSION['username'];
-            $stmt = $conn->prepare("UPDATE users SET name=?, email=? WHERE username=?");
-            $stmt->bind_param("ssi", $data['name'], $data['email'], $username);
+            $stmt = $conn->prepare("UPDATE users SET name=?, email=?, phone=?, biography=? WHERE username=?");
+            $stmt->bind_param("ssssi", $data['name'], $data['email'], $data['phone'], $data['biography'], $username);
             $stmt->execute();
             echo json_encode(['message' => 'Данные пользователя обновлены.']);
         } else {
@@ -33,18 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         // Регистрация нового пользователя
-        $username = $data['username'] ?? '';
-        $password = password_hash($data['password'] ?? '', PASSWORD_DEFAULT); // Хеширование пароля
+        $username = uniqid(); // Генерация уникального логина
+        $password = password_hash(uniqid(), PASSWORD_DEFAULT); // Хеширование пароля
         $name = $data['name'] ?? '';
         $email = $data['email'] ?? '';
+        $phone = $data['phone'] ?? '';
+        $biography = $data['biography'] ?? '';
 
-        if ($username && $password && $name && $email) {
+        if ($name && $email && $phone && $biography) {
             // Сохранение пользователя в базу данных
-            $stmt = $conn->prepare("INSERT INTO users (username, password, name, email) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $username, $password, $name, $email);
+            $stmt = $conn->prepare("INSERT INTO users (username, password, name, email, phone, biography) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $username, $password, $name, $email, $phone, $biography);
             if ($stmt->execute()) {
                 $_SESSION['username'] = $username; // Авторизация пользователя
-                echo json_encode(['message' => 'Пользователь зарегистрирован.', 'profile' => "profile.php?user=$username"]);
+                echo json_encode(['message' => 'Пользователь зарегистрирован.', 'username' => $username, 'password' => uniqid(), 'profile' => "log.html?user=$username"]);
             } else {
                 echo json_encode(['error' => 'Ошибка регистрации: ' . $stmt->error]);
             }
@@ -55,8 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['error' => 'Неверный метод запроса.']);
 }
-&nbsp;
-&nbsp;
 
 $conn->close(); // Закрытие соединения
 ?>
