@@ -7,9 +7,9 @@ if (!isset($_SESSION['admin_username'])) {
 
 // Подключение к базе данных
 $servername = "localhost"; // Ваш сервер базы данных
-$db_username = "your_db_username"; // Ваш пользователь базы данных
-$db_password = "your_db_password"; // Ваш пароль базы данных
-$dbname = "user_db"; // Имя вашей базы данных
+$db_username = "u68669"; // Ваш пользователь базы данных
+$db_password = "5943600"; // Ваш пароль базы данных
+$dbname = "u68669"; // Имя вашей базы данных
 
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
