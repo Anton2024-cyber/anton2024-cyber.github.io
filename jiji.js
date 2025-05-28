@@ -17,7 +17,13 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById('response').innerText = JSON.stringify(data);
+        // Обработка ответа от сервера
+        if (data.error) {
+            document.getElementById('response').innerText = data.error;
+        } else {
+            // Если данные успешно отправлены, перенаправляем на project.html
+            window.location.href = 'project.html';
+        }
     })
     .catch(error => {
         console.error('Ошибка:', error);
