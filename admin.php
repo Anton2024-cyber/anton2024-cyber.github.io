@@ -7,9 +7,9 @@ if (!isset($_SESSION['admin_username'])) {
 
 // Подключение к базе данных
 $servername = "localhost"; // Ваш сервер базы данных
-$db_username = "u68669"; // Ваш пользователь базы данных
-$db_password = "5943600"; // Ваш пароль базы данных
-$dbname = "u68669"; // Имя вашей базы данных
+$db_username = "your_db_username"; // Ваш пользователь базы данных
+$db_password = "your_db_password"; // Ваш пароль базы данных
+$dbname = "user_db"; // Имя вашей базы данных
 
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
@@ -56,10 +56,6 @@ $result = $conn->query("SELECT id, name, email, phone, biography FROM users");
             <td><?php echo htmlspecialchars($row['phone']); ?></td>
             <td><?php echo htmlspecialchars($row['biography']); ?></td>
             <td>
-                <form method="POST" action="edit.php" style="display:inline;">
-                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                    <button type="submit" name="edit">Редактировать</button>
-                </form>
                 <form method="POST" style="display:inline;">
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
                     <button type="submit" name="delete">Удалить</button>
