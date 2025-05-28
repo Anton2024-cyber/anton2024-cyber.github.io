@@ -1,11 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
 	<title>Faun</title>
-	<link rel="stylesheet" href="fonts/ofont.ru_Bebas Neue.ttf">
+	
 	<link rel="stylesheet" href="fonts/ofont.ru_bebas_neue_thin.ttf">
 	<link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <script defer src="./jaja.js"></script> 
     <style>
         *{
@@ -13,14 +16,14 @@
 	margin: 0;
 }
 body{
-	font-family: 'Bebas Neue', sans-serf;
+	font-family: 'Montserrat',sans-serif;
+  background-color: #fff890;
 }
 
 .header{
-    height: 90px;
+    height: auto;
     overflow: hidden;
     background-color: #15263b;
-    ;
 }
 
 .container{
@@ -33,13 +36,20 @@ body{
 
 .navbar {
     overflow: hidden;
-    background-color: #291549;
-    font-family: Arial, Helvetica, sans-serif;
     width: 90%;
     height: 150px;
-	margin: 0 auto;
+	  margin: 0 auto;
     display: flex;
     flex-direction: column;
+}
+
+@media (min-width:300px) and (max-width:700px) {
+  .navbar {
+    float: none;
+    width:100%;
+	display: flex;
+	flex-flow: row wrap;
+  }
 }
 
 .navbar a {
@@ -64,10 +74,11 @@ body{
     border: none;
     outline: none;
     color: white;
-    padding: 14px 16px;
     background-color: inherit;
     font-family: inherit;
+    padding: 14px 16px;
     margin: 0;
+    position: relative;
 }
 
 
@@ -100,14 +111,14 @@ body{
 .footer {
   padding: 20px;
   text-align: left;
-  background: #e21515;
-  color:#f2f2f2;
+  background: #c0ba62;
+  color:#ffffff;
   float: right;
   text-decoration: none;
   width:98%;
 }
 .footer a{
-  color: #f2f2f2;
+  color: #ffffff;
   text-align: left;
   display: inline;
     flex-direction: row;
@@ -127,27 +138,29 @@ body{
 }
 
 .portfolio-section {
-    display: grid; 
-    margin: 10px; 
+    display: grid;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px; 
+    margin: 20px 0; 
     grid-template-columns: repeat(4, 1fr); 
     grid-gap: 10px; 
 }    
 
 .portfolio-item {
-      display: grid; 
+    display: grid; 
     min-height: 32vh; 
     background-size: cover; 
     background-position: center; 
     text-align: center; 
-    align-content: center; 
+    color: red;
+    
 }    
 
 .portfolio-item:nth-child(1) {
   grid-column: 1;
   grid-row: 1/3; 
   }    
-
-  
 
 .portfolio-item:nth-child(4) {
     grid-column: 1/3; 
@@ -186,11 +199,11 @@ body{
 
 /* Расположите кнопку "вперед" справа */
 .next {
-  right: 300px;
+  right: 0;
   border-radius: 16px;
 }
 .prev{
-  left:300px;
+  left:0;
   border-radius: 16px;
 }
 
@@ -251,14 +264,130 @@ body{
   opacity: 1;
 }
 
+.container2 {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #777;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    text-align: left;
+}
+
+/* Блок услуги */
+.service-item {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.service-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.service-item img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+.service-item h3 {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.team-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.team-title {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+/* Сетка команды */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+/* Член команды */
+.team-member {
+    background: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.team-member h3 {
+    font-size: 18px;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.team-member p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.team-meta {
+    color: #777;
+    font-size: 12px;
+}
+
+.video-bg {
+    position: absolute;
+    float: right;
+    width: 92%;
+    height: 150px;
+    object-fit: cover;
+    
+    display: flex;
+}
+
     </style>
 </head>
 <body>
 	<header class="header">
+    
 		<div class="container">
-            <div class="logo"><img src="https://avatars.mds.yandex.net/get-shedevrum/14794476/img_907d6770b32611ef9d891690387607a1/orig" style="width: 120px; height: 100px;"></div>
-            <div class="navbar">
-                <div class="col-sm">
+            <div class="logo"><img src="https://avatars.mds.yandex.net/get-shedevrum/14794476/img_907d6770b32611ef9d891690387607a1/orig" style="width: 120px; height: 100px;" alt=""></div>
+            <div class="navbar"><video class="video-bg" autoplay loop muted>
+      <source src="https://anton2024-cyber.github.io/project/video.mp4" type="video/mp4">
+  </video>
+              <div class="col-sm">
                     <div class="dropdown">
                   <button class="dropbtn" style="width: 200px; border-bottom:1px solid #F00;">Dropdown 
                     <i class="fa fa-caret-down"></i>
@@ -271,58 +400,102 @@ body{
                   </div>
                 <a href="#news" style="width: 200px; border-bottom:1px solid #F00;">News</a>
                 <a href="#home" style="width: 200px; border-bottom:1px solid #F00;">Home</a>
-                </div> 
+              </div>
             </div>
 		</div>
 	</header>
   
-  <h1 style="text-align: center;">Команда</h1>
-        <div class="gal">
-            <table>
-            <tr>
-                <th><img src="https://media.geeksforgeeks.org/wp-content/uploads/geeks-25.png" alt=" " style="width:200px"></th>
-                <th><img src="https://media.geeksforgeeks.org/wp-content/uploads/geeks-25.png" alt=" " style="width:200px"></th>
-            </tr> 
-                <tr>
-                    <td>ppppppppp</td>
-                    <td>aaaapppp</td>
-                </tr>
-        </table>
+    <div class="container2">
+      <h1 style="text-align: center;">Ох какие мы классные!</h1>
+      <p class="subtitle" style="text-align: center;">Могём когда можем</p>
+      
+      <div class="services">
+          <!-- Блок 1 -->
+          <div class="service-item">
+              <img src="icon1.png" alt="Удаление всего сущего">
+              <h3>Удалениу всего сущего</h3>
+          </div>
+          <!-- Блок 2 -->
+          <div class="service-item">
+              <img src="icon2.png" alt="Разработка разботки">
+              <h3>Професионально разрабатываем</h3>
+          </div>
+          <!-- Блок 3 -->
+          <div class="service-item">
+              <img src="icon3.png" alt="Интеграция с КубГУ">
+              <h3>Мы с ним интегрированы</h3>
+          </div>
+          <!-- Блок 4 -->
+          <div class="service-item">
+              <img src="icon4.png" alt="Математически анализируем">
+              <h3>Математически анализируем 3 семестра</h3>
+          </div>
+          <!-- Блок 5 -->
+          <div class="service-item">
+              <img src="icon5.png" alt="Дифферецируемся">
+              <h3>Дискретно математим</h3>
+          </div>
+          <!-- Блок 8 -->
+          <div class="service-item">
+              <img src="icon9.png" alt="блаблабла">
+              <h3>блаблоблаблубли</h3>
+          </div>
+      </div>
+  </div>
+
+  <div class="team-container">
+    <h1 class="team-title" style="text-align: center;">Имя нам Легион</h1>
+    <div class="team-grid">
+        <!-- Член команды 1 -->
+        <div class="team-member">
+            <img src="photo1.jpg" alt="Антон Кирчиенко">
+            <h3>Антон Кириченко</h3>
+            <p>Руководитель руководителя и вообще хороший человек</p>
+            <p class="team-meta">В жизни 19 лет<br>Опыт работы с HTML: 1 семестр</p>
+        </div>
+        <!-- Член команды 2 -->
+        <div class="team-member">
+            <img src="photo2.jpg" alt="Артур Аветисян">
+            <h3>Артур Аветисян</h3>
+            <p>Директор директора и настоящий Боб-строитель</p>
+            <p class="team-meta">В жизни почти 20 лет<br>Опыт работы с HTML: 1 семестр</p>
+        </div>
     </div>
+</div>
 
     <h1 style="text-align: center;">Последние работы</h1>
-    <section class="portfolio-section" style="position: relative;">
+    <div class="portfolio-section">
       <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_su2wAVd7EGmLmYzZnEBGtWyO9763XsgoJ2utxbkn.png)"><span>Ссылки</span></div>
       <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_6idMUMxc3827vqIwmUNWFYfkiiJ6iQHcm5beqqAS.png)"><span>Калькулятор</span></div>
       <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_V6QSkq3LGESN711H2tmPTNLzhTi6eFTGLwMAcyDL.png)"><span>Поп-ап</span></div>
       <div class="portfolio-item" style="background-image: url(https://iimg.su/s/15/th_XgDukzqUQ9Vq7EwYfMFRd8oYAIWvufqVpVa9KD0F.png)"><span>Галерея</span></div>
-     </section>    
+    </div>    
 
      <h1 style="text-align: center;">Отзывы</h1>
 <div class="pypy">
      <div class="mySlides">
-      <img src="https://avatars.mds.yandex.net/i?id=1cf04a6f38f0be15415a0c35010d27a3eb59c5c5-7942200-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
+      <img src="https://avatars.mds.yandex.net/i?id=f9500b28652149ef7aaaa7e5164620ff08dbeb37-5025854-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
       </div>
       <div class="mySlides">
-        <img src="https://avatars.mds.yandex.net/i?id=02a0d438915e4409b6779abb9faf64f6cfcca7e5-5380211-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
+        <img src="https://avatars.mds.yandex.net/i?id=9ff5bce57c7c87d73cd734eba7728b335cdaf8c1-12384085-images-thumbs&n=13" style="width:500px;height: 300px;"  alt="">
         </div>
         <div class="mySlides">
-          <img src="https://avatars.mds.yandex.net/i?id=794669b01123dbf41c6d22cde6ba7d4cf4902e9b-6202880-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+          <img src="https://avatars.mds.yandex.net/i?id=9fce254875ff9f7c6850c735f47390adc632a9f081e5e8dd-13201380-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
           </div>
           <div class="mySlides">
-            <img src="https://avatars.mds.yandex.net/i?id=2ad00f6d6da86c36477f9a86aefc02107e2f256a-4474675-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+            <img src="https://avatars.mds.yandex.net/i?id=cd5c99f23e4de2d0da75cef0402a8373f738bb3e-4571029-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
             </div>
             <div class="mySlides">
-              <img src="https://avatars.mds.yandex.net/i?id=b6ee796842773a40fe1b1a47a69f87391169dc1a-12387244-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+              <img src="https://avatars.mds.yandex.net/i?id=bbe32558c16bd1f6653f2cdb845f4bd670628409-4599759-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
               </div>
               <div class="mySlides">
-                <img src="https://avatars.mds.yandex.net/i?id=1b8e0e70d61637c540f4f74748bba9fe24c7c2a2-5241344-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                <img src="https://avatars.mds.yandex.net/i?id=e0a5ced68ddee0031abfa5c529645c6f2bca91fe-9065769-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
                 </div>
                 <div class="mySlides">
-                  <img src="https://avatars.mds.yandex.net/i?id=38c9a040e09790b2810b546c18fbd74938b1dfcc-9144721-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                  <img src="https://avatars.mds.yandex.net/i?id=0b549844270e21689ddc919fecdd9511c4a87f79-11835812-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
                   </div>
                   <div class="mySlides">
-                    <img src="https://avatars.mds.yandex.net/i?id=34f57633c955c47b56c68537076e5bfabb4a397b-4577841-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
+                    <img src="https://avatars.mds.yandex.net/i?id=00f1fcbbbdc9a822bc27c4e6956fae95a2f027d5-4034093-images-thumbs&n=13" style="width:500px;height: 300px;" alt="">
                     </div>
       
     <a class="next" onclick="plusSlides(1)">Next</a>
@@ -333,16 +506,16 @@ body{
         <a href='#'>Помощь</a>
         <a href='#cont'>Контакты</a>
         <a href='#'>Правила</a>
-        <p>Телефон: +8 (800) 555-35-5</p>
+        <p>Телефон: +8 (800) 555-35-53</p>
         <p>Email: user_name@mail.ru</p>
         <div class="cont">
                 <form>
-            <input type="text" name="userName" placeholder=" Введите имя" size="18" style="border-radius:280px ; height: 40px; background-color: rgb(26, 209, 50); padding: 0; border: none; " /><br><br>
-            <input type="tel" placeholder=" Телефон (+7 (***) ***--)" pattern="+7 ([0-9]{3}) [0-9]{3}-[0-9]{2}-[0-9]{2}" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); "><br><br>
-            <input type="email" name="email" placeholder=" E-mail" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); "><br><br>
-            <input rows="10" cols="40" placeholder=" Ваш коментарий" style="border-radius:28px ; height: 100px; background-color: rgb(26, 209, 50); width: 350px; "><br><br>
-            <p>Согласен(-а) с обработкой персональных данных </p><input type="checkbox" name="dogovor" style="border-radius:28px ; height: 40px; background-color: rgb(26, 209, 50); text-align: center;"/><br><br>
-            <button type="submit" style="border-radius:40px ; height: 25px; background-color: rgb(26, 209, 50); width: 96px;">Отправить</button>
+            <input type="text" name="userName" placeholder=" Введите имя" size="18" style="border-radius:280px ; height: 40px; background-color: rgb(77, 77, 77); padding: 0; border: none; " ><br><br>
+            <input type="tel" placeholder=" Телефон (+7 (***) ***--)" pattern="+7 ([0-9]{3}) [0-9]{3}-[0-9]{2}-[0-9]{2}" style="border-radius:28px ; height: 40px; background-color: rgb(77, 77, 77); "><br><br>
+            <input type="email" name="email" placeholder=" E-mail" style="border-radius:28px ; height: 40px; background-color: rgb(77, 77, 77); "><br><br>
+            <textarea rows="10" cols="40" placeholder=" Ваш коментарий" style="border-radius:28px ; height: 100px; background-color: rgb(77, 77, 77); width: 350px; "></textarea><br><br>
+            <p>Согласен(-а) с обработкой персональных данных </p><input type="checkbox" name="dogovor" style="border-radius:28px ; height: 40px; background-color: rgb(77, 77, 77); text-align: center;"><br><br>
+            <button type="submit" style="border-radius:40px ; height: 25px; background-color: rgb(165, 165, 165); width: 96px;">Отправить</button>
                 </form>
             </div>
     </div>
