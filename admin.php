@@ -1,64 +1,68 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
-    header('Location: index.html'); // Перенаправление на страницу регистрации, если пользователь не авторизован
+if (!isset($_SESSION['admin_username'])) {
+    header('Location: login.php'); // Redirect to admin login page
     exit();
 }
 
-// Подключение к базе данных
-$servername = "localhost"; // или ваш сервер базы данных
-$db_username = "u68669"; // ваш пользователь базы данных
-$db_password = "5943600"; // ваш пароль базы данных
-$dbname = "u68669"; // имя вашей базы данных
+// Database connection
+$servername = "localhost"; // Your database server
+$db_username = "your_db_username"; // Your database username
+$db_password = "your_db_password"; // Your database password
+$dbname = "user_db"; // Your database name
 
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
-// Проверка соединения
+// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Удаление пользователя
-if (isset($_POST['delete_user'])) {
-    $username_to_delete = $_POST['username'];
-    $stmt = $conn->prepare("DELETE FROM users WHERE username=?");
-    $stmt->bind_param("s", $username_to_delete);
+// Handle user deletion
+if (isset($_POST['delete'])) {
+    $id_to_delete = $_POST['id'];
+    $stmt = $conn->prepare("DELETE FROM users WHERE id=?");
+    $stmt->bind_param("i", $id_to_delete);
     $stmt->execute();
 }
 
-// Получение всех пользователей
-$result = $conn->query("SELECT username, name, email, phone, biography FROM users");
+// Fetch all users
+$result = $conn->query("SELECT id, name, email, phone, biography FROM users");
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Панель администратора</title>
+    <title>Admin Panel</title>
 </head>
 <body>
-    <h1>Панель администратора</h1>
+    <h1>Admin Panel</h1>
     <table border="1">
         <tr>
-            <th>Логин</th>
-            <th>Имя</th>
+            <th>ID</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Телефон</th>
-            <th>Биография</th>
-            <th>Действия</th>
+            <th>Phone</th>
+            <th>Biography</th>
+            <th>Actions</th>
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
-            <td><?php echo htmlspecialchars($row['username']); ?></td>
+            <td><?php echo htmlspecialchars($row['id']); ?></td>
             <td><?php echo htmlspecialchars($row['name']); ?></td>
             <td><?php echo htmlspecialchars($row['email']); ?></td>
             <td><?php echo htmlspecialchars($row['phone']); ?></td>
             <td><?php echo htmlspecialchars($row['biography']); ?></td>
             <td>
-                <form method="POST">
-                    <input type="hidden" name="username" value="<?php echo htmlspecialchars($row['username']); ?>">
-                    <button type="submit" name="delete_user">Удалить</button>
+                <form method="POST" action="edit.php" style="display:inline;">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
+                    <button type="submit" name="edit">Edit</button>
+                </form>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['id']); ?>">
+                    <button type="submit" name="delete">Delete</button>
                 </form>
             </td>
         </tr>
@@ -69,5 +73,5 @@ $result = $conn->query("SELECT username, name, email, phone, biography FROM user
 </html>
 
 <?php
-$conn->close(); // Закрытие соединения
+$conn->close(); // Close connection
 ?>
