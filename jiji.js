@@ -7,7 +7,6 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
-
     fetch('log.php', {
         method: 'POST',
         headers: {
@@ -22,7 +21,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
             document.getElementById('response').innerText = data.error;
         } else {
             // Если данные успешно отправлены, перенаправляем на project.html
-            window.location.href = 'project.html';
+            window.location.href = data.profile; // Перенаправление на project.html
         }
     })
     .catch(error => {
