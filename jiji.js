@@ -7,7 +7,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
-    
+
     fetch('log.php', {
         method: 'POST',
         headers: {
@@ -41,7 +41,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(ev
         jsonData[key] = value;
     });
 
-    fetch('admin_view.php', {
+    fetch('admin_login.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
