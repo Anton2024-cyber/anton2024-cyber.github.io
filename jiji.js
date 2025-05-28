@@ -21,8 +21,8 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
         if (data.error) {
             document.getElementById('response').innerText = data.error;
         } else {
-            // Перенаправление на конкретный URL после успешной отправки
-            window.location.href = project.html; // Указываем конкретный URL
+            // Перенаправление на project.html после успешной отправки
+            window.location.href = 'project.html';
         }
     })
     .catch(error => {
